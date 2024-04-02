@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/cdleesang-tableorder-customer/static/css/main.071b50ec.css",
-    "main.js": "/cdleesang-tableorder-customer/static/js/main.49f81eaa.js",
+    "main.js": "/cdleesang-tableorder-customer/static/js/main.68e23c81.js",
     "static/js/453.8ad5e043.chunk.js": "/cdleesang-tableorder-customer/static/js/453.8ad5e043.chunk.js",
     "service-worker.js": "/cdleesang-tableorder-customer/service-worker.js",
     "index.html": "/cdleesang-tableorder-customer/index.html",
     "main.071b50ec.css.map": "/cdleesang-tableorder-customer/static/css/main.071b50ec.css.map",
-    "main.49f81eaa.js.map": "/cdleesang-tableorder-customer/static/js/main.49f81eaa.js.map",
+    "main.68e23c81.js.map": "/cdleesang-tableorder-customer/static/js/main.68e23c81.js.map",
     "453.8ad5e043.chunk.js.map": "/cdleesang-tableorder-customer/static/js/453.8ad5e043.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.071b50ec.css",
-    "static/js/main.49f81eaa.js"
+    "static/js/main.68e23c81.js"
   ]
 }
