@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "청담이상 테이블오더",
+  "name": "청담이상 테이블오더 고객용",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +18,8 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
   "display": "standalone",
+  "start_url": "/?standalone=true",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
