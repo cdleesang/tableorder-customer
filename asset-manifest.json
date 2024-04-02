@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/cdleesang-tableorder-customer/static/css/main.f855e6bc.css",
-    "main.js": "/cdleesang-tableorder-customer/static/js/main.37ea4825.js",
+    "main.css": "/cdleesang-tableorder-customer/static/css/main.071b50ec.css",
+    "main.js": "/cdleesang-tableorder-customer/static/js/main.49f81eaa.js",
     "static/js/453.8ad5e043.chunk.js": "/cdleesang-tableorder-customer/static/js/453.8ad5e043.chunk.js",
     "service-worker.js": "/cdleesang-tableorder-customer/service-worker.js",
     "index.html": "/cdleesang-tableorder-customer/index.html",
-    "main.f855e6bc.css.map": "/cdleesang-tableorder-customer/static/css/main.f855e6bc.css.map",
-    "main.37ea4825.js.map": "/cdleesang-tableorder-customer/static/js/main.37ea4825.js.map",
+    "main.071b50ec.css.map": "/cdleesang-tableorder-customer/static/css/main.071b50ec.css.map",
+    "main.49f81eaa.js.map": "/cdleesang-tableorder-customer/static/js/main.49f81eaa.js.map",
     "453.8ad5e043.chunk.js.map": "/cdleesang-tableorder-customer/static/js/453.8ad5e043.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.37ea4825.js"
+    "static/css/main.071b50ec.css",
+    "static/js/main.49f81eaa.js"
   ]
 }
