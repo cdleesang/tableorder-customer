@@ -1,0 +1,115 @@
+.menu-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+
+  .group-title {
+    display: flex;
+    align-items: center;
+    gap: .4em;
+    
+    .required-icon {
+      color: $point-color;
+    }
+    
+    .group-name {
+      font-size: 1.2em;
+      font-weight: 600;
+    }
+
+    .group-description {
+      font-size: .8em;
+    }
+  }
+
+  .menu-options {
+    .menu-option {
+      display: flex;
+      gap: 1em;
+      padding: .6em 0;
+      align-items: center;
+
+      &.sold-out {
+        position: relative;
+        opacity: .5;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          $extend-width: 3%;
+          width: 100% + $extend-width;
+          left: -($extend-width / 2);
+          height: 1px;
+          background-color: $font-color;
+        }
+
+        &::after {
+          content: 'Sold Out';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: $primary-color;
+          color: $font-color;
+          padding: .3em .6em;
+          border-radius: 5px;
+          font-size: .8em;
+        }
+      }
+
+      .option-button {
+        position: relative;
+        $size: 20px;
+        width: $size;
+        height: $size;
+        border: 1px solid $font-color;
+
+        &.checkbox {
+          &.selected {
+            background-color: $secondary-color;
+            border-color: $secondary-color;
+            
+            &::after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 27%;
+              width: $size * .3;
+              height: $size * .5;
+              border: solid $font-color;
+              border-width: 0 2.5px 2.5px 0;
+              transform: rotate(35deg) translate(-50%, -50%);
+            }
+          }
+        }
+
+        &.radio {
+          border-radius: 50%;
+
+          &.selected::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: $size * .6;
+            height: $size * .6;
+            background-color: $font-color;
+            border-radius: 50%;
+          }
+        }
+      }
+
+      .option-name {
+        flex: 1;
+        font-size: 1.1em;
+      }
+  
+      .option-price {
+        font-size: 1.1em;
+        font-weight: bold;
+      }
+    }
+  }
+}
