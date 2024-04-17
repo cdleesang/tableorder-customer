@@ -1,0 +1,189 @@
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.menu-modal-backdrop {
+  position: fixed;
+  top: $header-size;
+  width: 100vw;
+  height: calc(100vh - $header-size);
+  background-color: rgba($primary-color, .7);
+}
+
+.menu-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $primary-color;
+  border-radius: 1em;
+  width: 50vw;
+  height: 80vh;
+  animation: show .7s ease-out forwards;
+  box-shadow: 0px 0px 15px rgba($secondary-color, .5);
+  display: flex;
+  flex-direction: column;
+
+  .menu-container {
+    flex: 1;
+    display: flex;
+    overflow-y: auto;
+    flex-direction: column;
+    padding: 2em;
+    gap: 1em;
+
+    @include HideScrollbar;
+
+    .menu-header {
+      display: flex;
+      gap: 1em;
+  
+      .menu-img {
+        width: 45%;
+        aspect-ratio: 1/1;
+        border-radius: 1em;
+        background-position: center;
+        background-size: cover;
+
+        &.sold-out {
+          position: relative;
+
+          &::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: $primary-color;
+            opacity: .8;
+          }
+
+          &::after {
+            content: 'Sold Out';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+            width: 100%;
+            color: $font-color;
+            font-size: 2.5em;
+            font-weight: bold;
+          }
+        }
+      }
+      .menu-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        margin-left: 1em;
+  
+        .menu-name {
+          font-size: 1.6em;
+          font-weight: bold;
+        }
+  
+        .menu-description {
+          line-height: 1.3;
+          color: rgba($font-color, .8);
+        }
+      }
+    }
+  
+    .menu-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4em;
+    }
+  }
+
+  .menu-footer {
+    height: 70px;
+    border-top: 1px solid $secondary-color;
+    display: flex;
+    align-items: center;
+    padding: 0 1em 0 1em;
+    gap: 1em;
+
+    .menu-price {
+      flex: 1;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: end;
+    }
+
+    .menu-quantity {
+      background-color: $secondary-color;
+      width: 90px;
+      $height: 35px;
+      height: $height;
+      border-radius: $height / 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: .35em .6em;
+      font-weight: bold;
+
+      .counter {
+        font-family: 'Roboto Mono', monospace;
+      }
+    }
+
+    .menu-buttons {
+      display: flex;
+      gap: 10px;
+
+      .loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        > div {
+          border-color: transparent $font-color $font-color !important;
+        }
+      }
+
+      button {
+        font-weight: 500;
+        color: $font-color;
+        width: 110px;
+        height: 40px;
+        transition: opacity .5s;
+
+        &:disabled {
+          opacity: .5;
+        }
+      }
+  
+      .cart-button {
+        font-size: .8em;
+        background-color: $button-color;
+
+        &:not(&:disabled):active {
+          background-color: rgba($button-color, .7);
+        }
+      }
+  
+      .order-button {
+        background-color: $point-color;
+
+        &:not(&:disabled):active {
+          background-color: rgba($point-color, .7);
+        }
+      }
+    }
+  }
+
+  .not-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-weight: bold;
+    font-size: large;
+  }
+}

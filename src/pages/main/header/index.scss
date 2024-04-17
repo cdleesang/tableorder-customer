@@ -1,0 +1,59 @@
+.header {
+  height: $header-size;
+  display: flex;
+  align-items: center;
+  padding: 1% 1.3%;
+
+  .brand {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 2%;
+
+    .logo {
+      height: 40px;
+    }
+    .brand-name {
+      font-size: 1.3em;
+      font-weight: 500;
+    }
+  }
+
+  .call-staff-btn {
+    color: $font-color;
+    background-color: $point-color;
+    font-weight: 500;
+
+    &:active {
+      background-color: rgba($point-color, .75);
+    }
+  }
+  .table-info {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+    
+    .table-no {
+      .number {
+        font-size: 1.2em;
+        font-weight: 500;
+      }
+  
+      .error {
+        color: $error-color;
+      }
+    }
+
+    .order-history-btn {
+      color: $font-color;
+      background-color: $button-color;
+      font-weight: 500;
+
+      &:active {
+        background-color: rgba($button-color, .75);
+      }
+    }
+  }
+}

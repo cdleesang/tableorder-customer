@@ -1,0 +1,132 @@
+.menu-list {
+  flex: 1;
+  display: flex;
+  height: calc(100vh - $header-size);
+  flex-direction: column;
+  background-color: $secondary-color;
+  $padding-x: 3%;
+  gap: .7em;
+  border-radius: 15px 15px 0 0;
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+    padding: .7em $padding-x 0 $padding-x;
+
+    .badge {
+      border-radius: 15px;
+      background-color: $primary-color;
+      color: $font-color;
+      font-weight: bold;
+      font-size: .9em;
+      padding: 6px 8px;
+    }
+    
+    .divider {
+      width: 2px;
+      height: 20px;
+      background-color: $primary-color;
+    }
+  }
+  
+  .infinite-scroll-component__outerdiv {
+    flex: 1;
+    display: flex;
+    overflow-y: scroll;
+  }
+
+  .card-container {
+    flex: 1;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: min-content;
+    font-size: 1.4em;
+    gap: 5%;
+    padding: 5px $padding-x .7em $padding-x;
+    position: relative;
+
+    .card {
+      $radius: 15px;
+      box-shadow: 1px 1px 10px rgba($button-color, 0.5);
+      border-radius: $radius;
+      display: flex;
+      flex-direction: column;
+
+      &-image {
+        width: 100%;
+        aspect-ratio: 1/.8;
+        background-size: cover;
+        background-position: center;
+        border-radius: inherit;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+
+        &.sold-out {
+          position: relative;
+
+          &::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: $primary-color;
+            border-radius: inherit;
+            opacity: .8;
+          }
+
+          &::after {
+            content: 'Sold Out';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align: center;
+            width: 100%;
+            color: $font-color;
+            font-size: 1.5em;
+            font-weight: bold;
+          }
+        }
+      }
+      
+      &-body {
+        flex: 1;
+        font-size: .8em;
+        background-color: $primary-color;
+        border-radius: 0 0 $radius $radius;
+        padding: .6em .8em;
+        color: $font-color;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      &-title {
+        font-weight: bold;
+        font-size: 1.1em;
+        margin-bottom: .5em;
+      }
+
+      &-price {
+        text-align: end;
+        font-size: .8em;
+      }
+    }
+
+    .loader {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba($primary-color, $alpha: .5);
+  
+      > div {
+        border-color: transparent $point-color $point-color !important;
+      }
+    }
+  }
+}
