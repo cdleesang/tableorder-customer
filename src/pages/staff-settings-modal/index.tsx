@@ -1,6 +1,6 @@
 import { faWarning } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
+import api from '@cdleesang/tableorder-api-sdk';
 import { useSetRecoilState } from 'recoil';
 import { useConnection } from '../../service/connection';
 import { isStaffSettingsModalOpenState, setEnteredAt } from '../../store/state';

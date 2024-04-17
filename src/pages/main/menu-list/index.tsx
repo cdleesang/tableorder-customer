@@ -1,5 +1,5 @@
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
-import { Menu } from '@oz-k/cdleesang-tableorder-api-sdk/lib/structures/Menu';
+import api from '@cdleesang/tableorder-api-sdk';
+import { Menu } from '@cdleesang/tableorder-api-sdk/lib/structures/Menu';
 import { useEffect, useRef, useState } from 'react';
 import { RingSpinner } from 'react-spinner-overlay';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';

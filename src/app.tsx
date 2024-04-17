@@ -1,14 +1,14 @@
+import moment from 'moment';
+import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
-import SystemSettingsModal from './pages/system-settings-modal';
+import ToastContainer from './components/toast-container';
+import { dismissToast, toast } from './components/toast-container/utils/toast';
+import CallStaffModal from './pages/call-staff-modal';
 import Main from './pages/main';
 import ScreenSaver from './pages/screen-saver';
-import { isCallStaffModalOpenState, isStaffSettingsModalOpenState, isSystemSettingsModalOpenState } from './store/state';
-import CallStaffModal from './pages/call-staff-modal';
-import { useEffect, useRef } from 'react';
-import moment from 'moment';
-import { dismissToast, toast } from './components/toast-container/utils/toast';
-import ToastContainer from './components/toast-container';
 import StaffSettingsModal from './pages/staff-settings-modal';
+import SystemSettingsModal from './pages/system-settings-modal';
+import { isCallStaffModalOpenState, isStaffSettingsModalOpenState, isSystemSettingsModalOpenState } from './store/state';
 
 function App() {
   const isCallStaffModalOpen = useRecoilValue(isCallStaffModalOpenState);

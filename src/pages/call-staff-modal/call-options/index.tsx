@@ -1,4 +1,4 @@
-import { CallOption } from '@oz-k/cdleesang-tableorder-api-sdk/lib/structures/CallOption';
+import { CallOption } from '@cdleesang/tableorder-api-sdk/lib/structures/CallOption';
 import './index.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';

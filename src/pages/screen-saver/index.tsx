@@ -1,6 +1,6 @@
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
+import api from '@cdleesang/tableorder-api-sdk';
 import { useEffect, useRef, useState } from 'react';
 import { DotLoader } from 'react-spinner-overlay';
 import { useRecoilState } from 'recoil';
