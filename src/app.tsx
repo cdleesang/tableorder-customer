@@ -1,17 +1,19 @@
 import { useRecoilValue } from 'recoil';
-import SettingsModal from './pages/settings-modal';
+import SystemSettingsModal from './pages/system-settings-modal';
 import Main from './pages/main';
 import ScreenSaver from './pages/screen-saver';
-import { isCallStaffModalOpenState, isSettingsModalOpenState } from './store/state';
+import { isCallStaffModalOpenState, isStaffSettingsModalOpenState, isSystemSettingsModalOpenState } from './store/state';
 import CallStaffModal from './pages/call-staff-modal';
 import { useEffect, useRef } from 'react';
 import moment from 'moment';
 import { dismissToast, toast } from './components/toast-container/utils/toast';
 import ToastContainer from './components/toast-container';
+import StaffSettingsModal from './pages/staff-settings-modal';
 
 function App() {
   const isCallStaffModalOpen = useRecoilValue(isCallStaffModalOpenState);
-  const isSettingsModalOpen = useRecoilValue(isSettingsModalOpenState);
+  const isStaffSettingsModalOpen = useRecoilValue(isStaffSettingsModalOpenState);
+  const isSystemSettingsModalOpen = useRecoilValue(isSystemSettingsModalOpenState);
   const kitchenStatus = useRef<{
     status: 'open' | 'closing' | 'closed',
     isNotified: boolean,
@@ -22,20 +24,32 @@ function App() {
   });
 
   /** 
-   * 2시가 되면 1회성 주방 마감 예정 Toast
-   * 2시 30분이 되면 1회성 주방 마감 Toast + 기존 Toast 제거
+   * 2시(월요일은 1시)가 되면 1회성 주방 마감 예정 Toast
+   * 2시 30분(월요일은 1시 30분)이 되면 1회성 주방 마감 Toast + 기존 Toast 제거
    * 9시가 되면 기존 Toast 제거
    */
   useEffect(() => {
     const interval = setInterval(() => {
       const now = moment();
+      const isMonday = now.day() === 1;
+      const closingTime = isMonday
+        ? moment('01:00:00', 'HH:mm:ss')
+        : moment('02:00:00', 'HH:mm:ss');
+      const closedTime = isMonday
+        ? moment('01:30:00', 'HH:mm:ss')
+        : moment('02:30:00', 'HH:mm:ss');
+      const openTime = moment('09:00:00', 'HH:mm:ss');
+
+      // TODO: server pm2 ecosystem 구축, react production env 설정
+
       const isClosingTime = now.isBetween(
-        moment('02:00:00', 'HH:mm:ss'),
-        moment('02:30:00', 'HH:mm:ss'),
+        closingTime,
+        closedTime,
       );
+      
       const isClosedTime = now.isBetween(
-        moment('02:30:00', 'HH:mm:ss'),
-        moment('09:00:00', 'HH:mm:ss'),
+        closedTime,
+        openTime
       );
 
       if(isClosingTime) {
@@ -44,7 +58,7 @@ function App() {
             && kitchenStatus.current.isNotified
         ) return;
 
-        const toastId = toast('warning', '주방이 2시 30분에 마감됩니다', {
+        const toastId = toast('warning', `주방이 ${closedTime.format('H시 mm분')}에 마감됩니다`, {
           isInfinite: true,
           isFlicker: true,
         });
@@ -92,7 +106,8 @@ function App() {
       <Main />
       {isCallStaffModalOpen && <CallStaffModal />}
       <ScreenSaver />
-      {isSettingsModalOpen && <SettingsModal />}
+      {isStaffSettingsModalOpen && <StaffSettingsModal />}
+      {isSystemSettingsModalOpen && <SystemSettingsModal />}
       <ToastContainer />
     </>
   );

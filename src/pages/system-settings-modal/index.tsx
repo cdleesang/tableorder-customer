@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { SETTINGS_PASSWORD } from '../../constants/constant';
 import { useConnection } from '../../service/connection';
-import { isSettingsModalOpenState, setEnteredAt, tableNoState } from '../../store/state';
+import { isSystemSettingsModalOpenState, setEnteredAt, tableNoState } from '../../store/state';
 import './index.scss';
 
-function SettingsModal() {
+function SystemSettingsModal() {
   const [inputPassword, setInputPassword] = useState('');
-  const setIsSettingsModalOpen = useSetRecoilState(isSettingsModalOpenState);
+  const setIsSettingsModalOpen = useSetRecoilState(isSystemSettingsModalOpenState);
   const [tableNo, setTableNo] = useRecoilState(tableNoState);
   const connection = useConnection();
 
@@ -96,4 +96,4 @@ function SettingsModal() {
     </>;
 }
 
-export default SettingsModal;
+export default SystemSettingsModal;

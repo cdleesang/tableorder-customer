@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import Cart from './cart';
 import Header from './header';
 import MenuList from './menu-list';
 import Navigation from './navigation';
-import { isIdleState, currentViewMenuIdState, isOrderHistoryModalOpenState } from '../../store/state';
+import { isIdleState, currentViewMenuIdState, isOrderHistoryModalOpenState, openedCategoriesState } from '../../store/state';
 import './index.scss';
 import MenuModal from './menu-modal';
 import OrderHistoryModal from './order-history-modal';
@@ -15,13 +15,17 @@ function Main() {
   const isOrderHistoryModalOpen = useRecoilValue(isOrderHistoryModalOpenState);
   const [isIdle, setIsIdle] = useRecoilState(isIdleState);
   const setTimeoutId = useRef<NodeJS.Timeout | null>(null);
+  const setOpenedCategories = useSetRecoilState(openedCategoriesState);
 
   const handleActive = () => {
     setIsIdle(false);
     if(setTimeoutId.current) clearTimeout(setTimeoutId.current);
 
     setTimeoutId.current = setTimeout(
-      () => setIsIdle(true),
+      () => {
+        setIsIdle(true);
+        setOpenedCategories({});
+      },
       IDLE_TIME,
     );
   }

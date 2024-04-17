@@ -1,14 +1,15 @@
 import { useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import logo from '../../../assets/logo.png';
-import { isCallStaffModalOpenState, isOrderHistoryModalOpenState, isSettingsModalOpenState, tableNoState } from '../../../store/state';
+import { isCallStaffModalOpenState, isOrderHistoryModalOpenState, isStaffSettingsModalOpenState, isSystemSettingsModalOpenState, tableNoState } from '../../../store/state';
 import './index.scss';
 
 function Header() {
   const tableNo = useRecoilValue(tableNoState);
   const [clickCount, setClickCount] = useState(0);
   const setTimeoutId = useRef<NodeJS.Timeout | null>(null);
-  const setIsSettingsModalOpen = useSetRecoilState(isSettingsModalOpenState);
+  const setIsStaffSettingsModalOpen = useSetRecoilState(isStaffSettingsModalOpenState);
+  const setIsSystemSettingsModalOpen = useSetRecoilState(isSystemSettingsModalOpenState);
   const [isCallStaffModalOpen, setIsCallStaffModalOpen] = useRecoilState(isCallStaffModalOpenState);
   const [isOrderHistoryModalOpen, setIsOrderHistoryModalOpen] = useRecoilState(isOrderHistoryModalOpenState);
 
@@ -17,7 +18,7 @@ function Header() {
     
     if(setTimeoutId.current) clearTimeout(setTimeoutId.current);
     
-    if(clickCount+1 >= 3) setIsSettingsModalOpen(true);
+    if(clickCount+1 >= 3) setIsSystemSettingsModalOpen(true);
 
     setTimeoutId.current = setTimeout(() => {
       setClickCount(0);
@@ -42,7 +43,7 @@ function Header() {
           직원 호출
         </button>
         <div className="table-info">
-          <span className="table-no">
+          <span className="table-no" onClick={() => setIsStaffSettingsModalOpen(true)}>
             {tableNo !== undefined ? <>
               <span className="number">{tableNo}</span>
               번 테이블

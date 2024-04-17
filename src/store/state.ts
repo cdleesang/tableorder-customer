@@ -47,6 +47,12 @@ export const currentCategoryState = atom<{
   //   },
   // },
 });
+
+export const openedCategoriesState = atom<{[key: number]: boolean}>({
+  key: 'openedCategories',
+  default: {},
+});
+
 export const cartState = atom<{
   id: number,
   menuId: number,
@@ -87,7 +93,12 @@ export const isCallStaffModalOpenState = atom<boolean>({
   default: false,
 });
 
-export const isSettingsModalOpenState = atom<boolean>({
-  key: 'isSettingsModalOpen',
+export const isStaffSettingsModalOpenState = atom<boolean>({
+  key: 'isStaffSettingsModalOpen',
+  default: false,
+});
+
+export const isSystemSettingsModalOpenState = atom<boolean>({
+  key: 'isSystemSettingsModalOpen',
   default: false,
 });

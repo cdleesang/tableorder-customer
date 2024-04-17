@@ -5,14 +5,14 @@ import './index.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { toast } from '../../../components/toast-container/utils/toast';
-import { useSetRecoilState } from 'recoil';
-import { currentCategoryState } from '../../../store/state';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { currentCategoryState, openedCategoriesState } from '../../../store/state';
 import { MenuCategory } from '@oz-k/cdleesang-tableorder-api-sdk/lib/structures/MenuCategory';
 
 function Navigation() {
   const setCurrentCategory = useSetRecoilState(currentCategoryState);
   const [categories, setCategories] = useState<MenuCategory[]>([]);
-  const [isOpenedCategories, setIsOpenedCategories] = useState<Record<string, boolean>>({});
+  const [openedCategories, setOpenedCategories] = useRecoilState(openedCategoriesState);
   const connection = useConnection();
   
   useEffect(() => {
@@ -32,7 +32,7 @@ function Navigation() {
               <div className="item-title">
                 <span
                   onClick={() => {
-                    setIsOpenedCategories(prev => ({
+                    setOpenedCategories(prev => ({
                       ...prev, [mainCategory.id]: !prev[mainCategory.id]})
                     );
                     setCurrentCategory({
@@ -47,21 +47,21 @@ function Navigation() {
                     && <div
                       className="clickable"
                       onClick={() => {
-                        setIsOpenedCategories(prev => ({
+                        setOpenedCategories(prev => ({
                           ...prev, [mainCategory.id]: !prev[mainCategory.id]
                         }));
                       }}
                     >
                       <FontAwesomeIcon
                         className="dropdown-icon"
-                        icon={isOpenedCategories[mainCategory.id] ? faChevronUp : faChevronDown}
+                        icon={openedCategories[mainCategory.id] ? faChevronUp : faChevronDown}
                       />
                     </div>
                 }
               </div>
               {
                 mainCategory.subCategories.length > 1
-                  && <div className={`item-body${isOpenedCategories[mainCategory.id] ? ' opened' : ''}`}>
+                  && <div className={`item-body${openedCategories[mainCategory.id] ? ' opened' : ''}`}>
                     <div
                       className="sub-category"
                       onClick={() => setCurrentCategory({
