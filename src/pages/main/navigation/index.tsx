@@ -10,7 +10,7 @@ import { currentCategoryState, openedCategoriesState } from '../../../store/stat
 import { MenuCategory } from '@oz-k/cdleesang-tableorder-api-sdk/lib/structures/MenuCategory';
 
 function Navigation() {
-  const setCurrentCategory = useSetRecoilState(currentCategoryState);
+  const [currentCategory, setCurrentCategory] = useRecoilState(currentCategoryState);
   const [categories, setCategories] = useState<MenuCategory[]>([]);
   const [openedCategories, setOpenedCategories] = useRecoilState(openedCategoriesState);
   const connection = useConnection();
@@ -63,7 +63,7 @@ function Navigation() {
                 mainCategory.subCategories.length > 1
                   && <div className={`item-body${openedCategories[mainCategory.id] ? ' opened' : ''}`}>
                     <div
-                      className="sub-category"
+                      className={`sub-category ${currentCategory?.mainCategory.id === mainCategory.id && !currentCategory?.subCategory ? 'selected' : ''}`}
                       onClick={() => setCurrentCategory({
                         mainCategory: {id: mainCategory.id, name: mainCategory.name},
                       })}
@@ -73,7 +73,7 @@ function Navigation() {
                     {
                       mainCategory.subCategories.map(subCategory => (
                         <div
-                          className="sub-category"
+                          className={`sub-category ${currentCategory?.subCategory?.id === subCategory.id ? 'selected' : ''}`}
                           key={subCategory.id}
                           onClick={() => setCurrentCategory({
                             mainCategory: {id: mainCategory.id, name: mainCategory.name},
