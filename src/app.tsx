@@ -40,8 +40,6 @@ function App() {
         : moment('02:30:00', 'HH:mm:ss');
       const openTime = moment('09:00:00', 'HH:mm:ss');
 
-      // TODO: server pm2 ecosystem 구축, react production env 설정
-
       const isClosingTime = now.isBetween(
         closingTime,
         closedTime,
