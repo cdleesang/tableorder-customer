@@ -2,15 +2,15 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import './index.scss';
 import { cartState, currentViewMenuIdState } from '../../../store/state';
 import { useEffect, useState } from 'react';
-import { MenuDetail } from '@oz-k/cdleesang-tableorder-api-sdk/lib/structures/MenuDetail';
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
+import { MenuDetail } from '@cdleesang/tableorder-api-sdk/lib/structures/MenuDetail';
+import api from '@cdleesang/tableorder-api-sdk';
 import { useConnection } from '../../../service/connection';
 import { toast } from '../../../components/toast-container/utils/toast';
 import { priceComma } from '../../../utils/price-comma';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import MenuOptionGroup from './menu-option-group';
-import { OrderImmediatelyBody } from '@oz-k/cdleesang-tableorder-api-sdk/lib/structures/OrderImmediatelyBody';
+import { OrderImmediatelyBody } from '@cdleesang/tableorder-api-sdk/lib/structures/OrderImmediatelyBody';
 import { RingSpinner } from 'react-spinner-overlay';
 
 function MenuModal() {

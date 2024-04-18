@@ -1,6 +1,6 @@
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
+import api from '@cdleesang/tableorder-api-sdk';
 import { useEffect, useRef, useState } from 'react';
 import { DotLoader } from 'react-spinner-overlay';
 import { useRecoilState } from 'recoil';
@@ -10,14 +10,21 @@ import './index.scss';
 import { toast } from '../../components/toast-container/utils/toast';
 import { SLIDE_INTERVAL } from '../../constants/constant';
 
+const retryQueue: (() => void)[] = [];
+
+setInterval(() => {
+  while(retryQueue.length > 0) {
+    console.log('retrying...');
+    retryQueue.shift()?.();
+  }
+}, 5000);
+
 function connectSSE(host: string, setSlideUrls: (slideUrls: string[]) => void) {
   const sse = new EventSource(`${host}/notification/sse`);
 
   sse.onerror = () => {
     sse.close();
-    setTimeout(() => {
-      connectSSE(host, setSlideUrls);
-    }, 5000);
+    retryQueue.push(() => connectSSE(host, setSlideUrls));
   }
 
   sse.addEventListener('SlideImageChanged', event => {

@@ -1,7 +1,7 @@
 import { faCircle as farCircle } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft, faArrowRotateRight, faCircle, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
+import api from '@cdleesang/tableorder-api-sdk';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { SETTINGS_PASSWORD } from '../../constants/constant';

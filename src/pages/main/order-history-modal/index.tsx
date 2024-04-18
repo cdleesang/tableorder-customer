@@ -1,7 +1,7 @@
 import { faReceipt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
-import { GetAllOrderHistoriesResponse } from '@oz-k/cdleesang-tableorder-api-sdk/lib/structures/GetAllOrderHistoriesResponse';
+import api from '@cdleesang/tableorder-api-sdk';
+import { GetAllOrderHistoriesResponse } from '@cdleesang/tableorder-api-sdk/lib/structures/GetAllOrderHistoriesResponse';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { RingSpinner } from 'react-spinner-overlay';

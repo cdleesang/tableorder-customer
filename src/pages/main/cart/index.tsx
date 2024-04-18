@@ -1,6 +1,6 @@
 import { faCartShopping, faMinus, faPlus, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
+import api from '@cdleesang/tableorder-api-sdk';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { priceComma } from '../../../utils/price-comma';

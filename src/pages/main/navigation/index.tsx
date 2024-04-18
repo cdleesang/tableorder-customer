@@ -1,13 +1,13 @@
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
-import { useEffect, useState } from 'react';
-import { useConnection } from '../../../service/connection';
-import './index.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import api from '@cdleesang/tableorder-api-sdk';
+import { MenuCategory } from '@cdleesang/tableorder-api-sdk/lib/structures/MenuCategory';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { toast } from '../../../components/toast-container/utils/toast';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useConnection } from '../../../service/connection';
 import { currentCategoryState, openedCategoriesState } from '../../../store/state';
-import { MenuCategory } from '@oz-k/cdleesang-tableorder-api-sdk/lib/structures/MenuCategory';
+import './index.scss';
 
 function Navigation() {
   const [currentCategory, setCurrentCategory] = useRecoilState(currentCategoryState);

@@ -1,4 +1,4 @@
-import { IConnection } from '@oz-k/cdleesang-tableorder-api-sdk';
+import { IConnection } from '@cdleesang/tableorder-api-sdk';
 import { useRecoilValue } from 'recoil';
 import { tableNoState } from '../store/state';
 import { API_URL } from '../constants/constant';

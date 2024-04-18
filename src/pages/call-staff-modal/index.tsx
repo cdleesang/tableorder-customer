@@ -1,5 +1,5 @@
-import api from '@oz-k/cdleesang-tableorder-api-sdk';
-import { CallOption } from '@oz-k/cdleesang-tableorder-api-sdk/lib/structures/CallOption';
+import api from '@cdleesang/tableorder-api-sdk';
+import { CallOption } from '@cdleesang/tableorder-api-sdk/lib/structures/CallOption';
 import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import CallOptions from './call-options';
