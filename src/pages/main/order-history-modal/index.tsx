@@ -39,6 +39,9 @@ function OrderHistoryModal() {
         <div className="order-history-header">
           <h2 className="order-history-title">
             주문 내역
+            <div className="desc" style={{fontSize: '.6em', opacity: .5}}>
+              갱신까지 최대 1분 소요될 수 있어요
+            </div>
           </h2>
           {
             (!isLoading && orderHistories.length > 0) &&
