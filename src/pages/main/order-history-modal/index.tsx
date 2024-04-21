@@ -24,7 +24,9 @@ function OrderHistoryModal() {
     }).then(({orderHistories}) => {
       setOrderHistories(orderHistories.reverse());
       setIsLoading(false);
-    }).catch(() => {
+    }).catch((err) => {
+      localStorage.setItem('getAllOrderHistory', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+
       toast('error', '주문 내역을 불러오는 중 오류가 발생했습니다');
       setIsLoading(false);
     });

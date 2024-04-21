@@ -12,6 +12,7 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import MenuOptionGroup from './menu-option-group';
 import { OrderImmediatelyBody } from '@cdleesang/tableorder-api-sdk/lib/structures/OrderImmediatelyBody';
 import { RingSpinner } from 'react-spinner-overlay';
+import moment from 'moment';
 
 function MenuModal() {
   const [currentViewMenuId, setCurrentViewMenuId] = useRecoilState(currentViewMenuIdState);
@@ -98,7 +99,9 @@ function MenuModal() {
         }, {})
         );
       })
-      .catch(() => {
+      .catch((err) => {
+        localStorage.setItem('getMenuDetail', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+
         toast('error', '메뉴를 불러오는데 실패했습니다.');
       });
   }, []);
@@ -274,6 +277,8 @@ function MenuModal() {
                             toast('error', '장바구니에 더 이상 추가할 수 없습니다.');
                             return;
                           }
+                          localStorage.setItem('addItem', JSON.stringify(err));
+
                           toast('error', '장바구니에 추가하는데 실패했습니다.');
                         });
                       }}
@@ -314,7 +319,9 @@ function MenuModal() {
                           toast('success', '주문이 완료되었습니다.');
                           setIsOrdering(false);
                           setCurrentViewMenuId(undefined);
-                        }).catch(() => {
+                        }).catch((err) => {
+                          localStorage.setItem('order', JSON.stringify(err));
+
                           toast('error', '주문에 실패했습니다.');
                           setIsOrdering(false);
                         })

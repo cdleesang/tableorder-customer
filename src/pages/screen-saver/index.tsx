@@ -9,6 +9,7 @@ import { isIdleState } from '../../store/state';
 import './index.scss';
 import { toast } from '../../components/toast-container/utils/toast';
 import { SLIDE_INTERVAL } from '../../constants/constant';
+import moment from 'moment';
 
 const retryQueue: (() => void)[] = [];
 
@@ -71,7 +72,9 @@ function ScreenSaver() {
         
         setIsLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
+        localStorage.setItem('getAllSlideImage', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+
         setIsLoading(false);
 
         toast('error', '슬라이드 이미지를 불러오는 중 오류가 발생했습니다');

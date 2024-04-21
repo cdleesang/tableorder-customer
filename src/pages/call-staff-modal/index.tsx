@@ -7,31 +7,48 @@ import { useConnection } from '../../service/connection';
 import { isCallStaffModalOpenState } from '../../store/state';
 import './index.scss';
 import { toast } from '../../components/toast-container/utils/toast';
+import moment from 'moment';
+
+type currentOptions = Record<string, {
+  id: number;
+  isSelected: boolean;
+  count: number;
+}>
 
 function CallStaffModal() {
   const setIsCallStaffModalOpen = useSetRecoilState(isCallStaffModalOpenState);
   const [callOptions, setCallOptions] = useState<CallOption[]>([]);
   const connection = useConnection();
-  const [currentOptions, setCurrentOptions] = useState<Record<string, {
-    id: number;
-    isSelected: boolean;
-    count: number;
-  }>>({});
+  const [currentOptions, setCurrentOptions] = useState<currentOptions>({});
 
   useEffect(() => {
     api.functional.call_staff.option.getCallStaffOptions(connection)
       .then(options => {
-        setCallOptions(options);
-        setCurrentOptions(options.reduce((acc, option) => ({
-          ...acc,
-          [option.id]: {
-            id: option.id,
-            isSelected: false,
-            count: 1
+        options = [
+          ...options,
+          {
+            id: 999,
+            title: '얼음잔',
+            isCountable: true,
           }
-        }), {}));
+        ];
+        setCallOptions([
+          ...options,
+        ]);
+        setCurrentOptions(
+          options.reduce((acc, option) => ({
+            ...acc,
+            [option.id]: {
+              id: option.id,
+              isSelected: false,
+              count: 1
+            }
+          }), {} as currentOptions),
+        );
       })
-      .catch(() => {
+      .catch((err) => {
+        localStorage.setItem('getCallStaffOptions', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+
         toast('error', '직원 호출 옵션을 불러오는 중 오류가 발생했습니다');
       });
   }, []);
@@ -71,7 +88,8 @@ function CallStaffModal() {
               })),
             }).then(() => {
               toast('success', '직원을 호출했습니다');
-            }).catch(() => {
+            }).catch(err => {
+              localStorage.setItem('callStaffError', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
               toast('error', '직원 호출에 실패했습니다');
             });
 
