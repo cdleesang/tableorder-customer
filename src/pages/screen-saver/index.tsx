@@ -20,12 +20,44 @@ setInterval(() => {
   }
 }, 5000);
 
-function connectSSE(host: string, setSlideUrls: (slideUrls: string[]) => void) {
-  const sse = new EventSource(`${host}/notification/sse`);
+function applySlideImages(
+  connection: api.IConnection,
+  setIsLoading: (isLoading: boolean) => void,
+  setSlideUrls: (slideUrls: string[]) => void,
+  toasting = true,
+) {
+  // 슬라이드 이미지 초기화
+  api.functional.store.slide_image.getAllSlideImages(connection)
+    .then(({imageUrls}) => {
+      setSlideUrls(imageUrls);
+      
+      setIsLoading(false);
+    })
+    .catch((err) => {
+      localStorage.setItem('getAllSlideImage', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+
+      setIsLoading(false);
+
+      if(toasting) {
+        toast('error', '슬라이드 이미지를 불러오는 중 오류가 발생했습니다');
+      }
+    });
+}
+
+function connectSSE(
+  connection: api.IConnection,
+  setIsLoading: (isLoading: boolean) => void,
+  setSlideUrls: (slideUrls: string[]) => void,
+) {
+  const sse = new EventSource(`${connection.host}/notification/sse`);
 
   sse.onerror = () => {
     sse.close();
-    retryQueue.push(() => connectSSE(host, setSlideUrls));
+    retryQueue.push(() => connectSSE(connection, setIsLoading, setSlideUrls));
+  }
+
+  sse.onopen = () => {
+    applySlideImages(connection, setIsLoading, setSlideUrls, false);
   }
 
   sse.addEventListener('SlideImageChanged', event => {
@@ -65,22 +97,9 @@ function ScreenSaver() {
   }
 
   useEffect(() => {
-    // 슬라이드 이미지 초기화
-    api.functional.store.slide_image.getAllSlideImages(connection)
-      .then(({imageUrls}) => {
-        setSlideUrls(imageUrls);
-        
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        localStorage.setItem('getAllSlideImage', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+    applySlideImages(connection, setIsLoading, setSlideUrls);
 
-        setIsLoading(false);
-
-        toast('error', '슬라이드 이미지를 불러오는 중 오류가 발생했습니다');
-      });
-
-    connectSSE(connection.host, setSlideUrls);
+    connectSSE(connection, setIsLoading, setSlideUrls);
   }, []);
 
   useEffect(() => {
@@ -89,6 +108,7 @@ function ScreenSaver() {
     }
 
     autoSlideSetTimeoutId.current = setTimeout(() => {
+      if(!slideUrls.length) return;
       setCurrentIndex(prev => (prev + 1) % slideUrls.length);
     }, SLIDE_INTERVAL);
   }, [currentIndex, slideUrls]);
