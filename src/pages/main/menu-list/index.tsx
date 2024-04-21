@@ -8,6 +8,7 @@ import { useConnection } from '../../../service/connection';
 import { currentCategoryState, currentViewMenuIdState } from '../../../store/state';
 import './index.scss';
 import { priceComma } from '../../../utils/price-comma';
+import moment from 'moment';
 
 function Breadcrumb() {
   const [currentCategory, setCurrentCategory] = useRecoilState(currentCategoryState);
@@ -73,6 +74,7 @@ function MenuList() {
         return;
       }
 
+      localStorage.setItem('getPaginatedMenus', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
       toast('error', '메뉴를 불러오는 중 오류가 발생했습니다.');
     });
 

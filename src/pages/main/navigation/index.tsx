@@ -8,6 +8,7 @@ import { toast } from '../../../components/toast-container/utils/toast';
 import { useConnection } from '../../../service/connection';
 import { currentCategoryState, openedCategoriesState } from '../../../store/state';
 import './index.scss';
+import moment from 'moment';
 
 function Navigation() {
   const [currentCategory, setCurrentCategory] = useRecoilState(currentCategoryState);
@@ -18,7 +19,9 @@ function Navigation() {
   useEffect(() => {
     api.functional.menu.category.getMenuCategories(connection)
       .then(setCategories)
-      .catch(() => {
+      .catch((err) => {
+        localStorage.setItem('getMenuCategory', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+
         toast('error', '카테고리를 불러오는 중 오류가 발생했습니다');
       });
   }, []);

@@ -5,6 +5,7 @@ import { useSetRecoilState } from 'recoil';
 import { useConnection } from '../../service/connection';
 import { isStaffSettingsModalOpenState, setEnteredAt } from '../../store/state';
 import './index.scss';
+import moment from 'moment';
 
 function StaffSettingsModal() {
   const setIsStaffSettingsModalOpen = useSetRecoilState(isStaffSettingsModalOpenState);
@@ -24,7 +25,9 @@ function StaffSettingsModal() {
                   setEnteredAt(new Date());
                   window.location.reload()
                 })
-                .catch(() => {
+                .catch((err) => {
+                  localStorage.setItem('clearCart', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+
                   alert('테이블 정리 중 오류가 발생했습니다');
                 })
             }}
