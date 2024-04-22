@@ -15,7 +15,7 @@ export const isIdleState = atom<boolean>({
   default: true,
 })
 
-const tableNoKey = 'tableNo';
+export const tableNoKey = 'tableNo';
 export const tableNoState = atom<number | undefined>({
   key: tableNoKey,
   default: parseInt(localStorage.getItem(tableNoKey) || '', 10) || undefined,
