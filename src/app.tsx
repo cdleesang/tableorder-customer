@@ -6,9 +6,8 @@ import { dismissToast, toast } from './components/toast-container/utils/toast';
 import CallStaffModal from './pages/call-staff-modal';
 import Main from './pages/main';
 import ScreenSaver from './pages/screen-saver';
-import StaffSettingsModal from './pages/staff-settings-modal';
-import SystemSettingsModal from './pages/system-settings-modal';
-import { isCallStaffModalOpenState, isStaffSettingsModalOpenState, isSystemSettingsModalOpenState } from './store/state';
+import TableSettingsModal from './pages/table-settings-modal';
+import { isCallStaffModalOpenState, isSystemSettingsModalOpenState } from './store/state';
 
 type KitchenStatus = {
   status: 'open' | 'closing' | 'closed',
@@ -86,7 +85,6 @@ function toastKitchenStatus(currentStatus: KitchenStatus, setStatus: (status: Ki
 
 function App() {
   const isCallStaffModalOpen = useRecoilValue(isCallStaffModalOpenState);
-  const isStaffSettingsModalOpen = useRecoilValue(isStaffSettingsModalOpenState);
   const isSystemSettingsModalOpen = useRecoilValue(isSystemSettingsModalOpenState);
   const kitchenStatus = useRef<KitchenStatus>({
     status: 'open',
@@ -112,8 +110,7 @@ function App() {
       <Main />
       {isCallStaffModalOpen && <CallStaffModal />}
       <ScreenSaver />
-      {isStaffSettingsModalOpen && <StaffSettingsModal />}
-      {isSystemSettingsModalOpen && <SystemSettingsModal />}
+      {isSystemSettingsModalOpen && <TableSettingsModal />}
       <ToastContainer />
     </>
   );

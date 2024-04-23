@@ -1,15 +1,5 @@
 import { atom } from 'recoil';
 
-export function getEnteredAt() {
-  const enteredAtStr = localStorage.getItem('enteredAt');
-  if(!enteredAtStr) return null;
-  return new Date(parseInt(enteredAtStr, 10));
-}
-
-export function setEnteredAt(enteredAt: Date) {
-  localStorage.setItem('enteredAt', enteredAt.getTime().toString());
-}
-
 export const isIdleState = atom<boolean>({
   key: 'isIdle',
   default: true,
@@ -90,11 +80,6 @@ export const currentViewMenuIdState = atom<number | undefined>({
 
 export const isCallStaffModalOpenState = atom<boolean>({
   key: 'isCallStaffModalOpen',
-  default: false,
-});
-
-export const isStaffSettingsModalOpenState = atom<boolean>({
-  key: 'isStaffSettingsModalOpen',
   default: false,
 });
 

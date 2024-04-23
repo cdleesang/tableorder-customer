@@ -1167,10 +1167,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@cdleesang/tableorder-api-sdk@0.1.3":
-  version "0.1.3"
-  resolved "https://npm.pkg.github.com/download/@cdleesang/tableorder-api-sdk/0.1.3/516df0f56bfa815c69a65cad9821a81a6e929534#516df0f56bfa815c69a65cad9821a81a6e929534"
-  integrity sha512-a5w/+nUtYZvECzcl2o2FtpGimwwkP9FFyiPB3RXowT7fJP9sUDGvhISHmstnS8biRZmy0LpkyvljVwYJJS9tRA==
+"@cdleesang/tableorder-api-sdk@0.1.4":
+  version "0.1.4"
+  resolved "https://npm.pkg.github.com/download/@cdleesang/tableorder-api-sdk/0.1.4/bac96ac90112a58bea74004f8b54e4b1d95b9798#bac96ac90112a58bea74004f8b54e4b1d95b9798"
+  integrity sha512-ubSlzZPpG8QZSHB3IOT52NeBUfHUhiP7AJQmmvTlATrEOXYd/v9krY7UVA9hnVrjhkZXYQC4e/CmknzqKJp8RQ==
   dependencies:
     "@nestia/fetcher" "^2.6.4"
     typia "^5.5.10"
