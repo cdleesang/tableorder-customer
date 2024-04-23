@@ -1,14 +1,13 @@
 import { useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import logo from '../../../assets/logo.png';
-import { isCallStaffModalOpenState, isOrderHistoryModalOpenState, isStaffSettingsModalOpenState, isSystemSettingsModalOpenState, tableNoState } from '../../../store/state';
+import { isCallStaffModalOpenState, isOrderHistoryModalOpenState, isSystemSettingsModalOpenState, tableNoState } from '../../../store/state';
 import './index.scss';
 
 function Header() {
   const tableNo = useRecoilValue(tableNoState);
   const [clickCount, setClickCount] = useState(0);
   const setTimeoutId = useRef<NodeJS.Timeout | null>(null);
-  const setIsStaffSettingsModalOpen = useSetRecoilState(isStaffSettingsModalOpenState);
   const setIsSystemSettingsModalOpen = useSetRecoilState(isSystemSettingsModalOpenState);
   const [isCallStaffModalOpen, setIsCallStaffModalOpen] = useRecoilState(isCallStaffModalOpenState);
   const [isOrderHistoryModalOpen, setIsOrderHistoryModalOpen] = useRecoilState(isOrderHistoryModalOpenState);
@@ -30,7 +29,7 @@ function Header() {
       <div className="header">
         <div
           className="brand"
-          onClick={handleClick}
+          onClick={() => window.location.href = '/'}
         >
           <img className="logo" src={logo} alt="logo" />
           <span className="brand-name">청담이상</span>
@@ -43,7 +42,7 @@ function Header() {
           직원 호출
         </button>
         <div className="table-info">
-          <span className="table-no" onClick={() => setIsStaffSettingsModalOpen(true)}>
+          <span className="table-no" onClick={handleClick}>
             {tableNo !== undefined ? <>
               <span className="number">{tableNo}</span>
               번 테이블
