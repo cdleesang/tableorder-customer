@@ -1,19 +1,16 @@
 import { faCircle as farCircle } from '@fortawesome/free-regular-svg-icons';
 import { faArrowLeft, faArrowRotateRight, faCircle, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import api from '@cdleesang/tableorder-api-sdk';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { SETTINGS_PASSWORD } from '../../constants/constant';
-import { useConnection } from '../../service/connection';
-import { isSystemSettingsModalOpenState, setEnteredAt, tableNoState } from '../../store/state';
+import { isSystemSettingsModalOpenState, tableNoState } from '../../store/state';
 import './index.scss';
 
-function SystemSettingsModal() {
+function TableSettingsModal() {
   const [inputPassword, setInputPassword] = useState('');
   const setIsSettingsModalOpen = useSetRecoilState(isSystemSettingsModalOpenState);
   const [tableNo, setTableNo] = useRecoilState(tableNoState);
-  const connection = useConnection();
 
   useEffect(() => {
     if(inputPassword.length !== SETTINGS_PASSWORD.length) return;
@@ -40,24 +37,8 @@ function SystemSettingsModal() {
               </div>
               <button
                 type='button'
-                className="clean-up"
-                onClick={() => {
-                  api.functional.cart.clearCart(connection)
-                    .then(() => {
-                      setEnteredAt(new Date());
-                      window.location.reload()
-                    })
-                    .catch(() => {
-                      alert('테이블 정리 중 오류가 발생했습니다');
-                    })
-                }}
-              >
-                테이블 정리
-              </button>
-              <button
-                type='button'
                 className="refresh"
-                onClick={() => window.location.reload()}
+                onClick={() => window.location.href = '/'}
                 >
                   앱 새로고침
               </button>
@@ -96,4 +77,4 @@ function SystemSettingsModal() {
     </>;
 }
 
-export default SystemSettingsModal;
+export default TableSettingsModal;
