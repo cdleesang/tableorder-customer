@@ -25,7 +25,7 @@ function toastKitchenStatus(currentStatus: KitchenStatus, setStatus: (status: Ki
   const isMonday = now.day() === 1;
   const closedTime = isMonday
     ? moment('01:30:00', 'HH:mm:ss')
-    : moment('02:30:00', 'HH:mm:ss');
+    : moment('02:00:00', 'HH:mm:ss');
   const closingTime = closedTime.clone().subtract(30, 'minutes');
   const openTime = moment('09:00:00', 'HH:mm:ss');
 
