@@ -11,7 +11,7 @@ function App() {
   const isCallStaffModalOpen = useRecoilValue(isCallStaffModalOpenState);
   const isSystemSettingsModalOpen = useRecoilValue(isSystemSettingsModalOpenState);
   
-  KitchenStatusToaster();
+  useKitchenStatusToast();
 
   return (
     <>
