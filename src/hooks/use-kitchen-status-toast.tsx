@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { useEffect, useRef } from 'react';
-import { dismissToast, toast } from '../../components/toast-container/utils/toast';
-import KitchenClosingAnnounceMP3 from '../../assets/sounds/kitchen-closing-announce.mp3';
-import plingSoundMP3 from '../../assets/sounds/pling.mp3';
+import { dismissToast, toast } from '../components/toast-container/utils/toast';
+import KitchenClosingAnnounceMP3 from '../assets/sounds/kitchen-closing-announce.mp3';
+import plingSoundMP3 from '../assets/sounds/pling.mp3';
 
 type KitchenStatus = {
   status: 'open' | 'closing' | 'closed',
@@ -10,7 +10,7 @@ type KitchenStatus = {
   currentToastId?: string | number,
 };
 
-function KitchenStatusToaster() {
+function useKitchenStatusToast() {
   const kitchenStatus = useRef<KitchenStatus>({
     status: 'open',
     isNotified: false,
@@ -18,12 +18,12 @@ function KitchenStatusToaster() {
 
   const playKitchenClosingSound = () => {
     const plingSound = new Audio(plingSoundMP3);
-    plingSound.volume = 0.5;
+    plingSound.volume = 1;
     plingSound.preservesPitch = false;
     plingSound.playbackRate = 1.1;
-    
+
     const kitchenClosingSound = new Audio(KitchenClosingAnnounceMP3);
-    kitchenClosingSound.volume = 0.5;
+    kitchenClosingSound.volume = .7;
     kitchenClosingSound.preservesPitch = false;
     kitchenClosingSound.playbackRate = 0.96;
 
@@ -119,4 +119,4 @@ function KitchenStatusToaster() {
   }, []);
 }
 
-export default KitchenStatusToaster;
+export default useKitchenStatusToast;
