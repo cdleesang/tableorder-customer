@@ -4,8 +4,8 @@ import CallStaffModal from './pages/call-staff-modal';
 import Main from './pages/main';
 import ScreenSaver from './pages/screen-saver';
 import TableSettingsModal from './pages/table-settings-modal';
+import useKitchenStatusToast from './hooks/use-kitchen-status-toast';
 import { isCallStaffModalOpenState, isSystemSettingsModalOpenState } from './store/state';
-import KitchenStatusToaster from './pages/kitchen-status-toaster';
 
 function App() {
   const isCallStaffModalOpen = useRecoilValue(isCallStaffModalOpenState);
