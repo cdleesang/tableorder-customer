@@ -1,6 +1,8 @@
 import moment from 'moment';
 import { useEffect, useRef } from 'react';
 import { dismissToast, toast } from '../../components/toast-container/utils/toast';
+import KitchenClosingAnnounceMP3 from '../../assets/sounds/kitchen-closing-announce.mp3';
+import plingSoundMP3 from '../../assets/sounds/pling.mp3';
 
 type KitchenStatus = {
   status: 'open' | 'closing' | 'closed',
@@ -13,6 +15,24 @@ function KitchenStatusToaster() {
     status: 'open',
     isNotified: false,
   });
+
+  const playKitchenClosingSound = () => {
+    const plingSound = new Audio(plingSoundMP3);
+    plingSound.volume = 0.5;
+    plingSound.preservesPitch = false;
+    plingSound.playbackRate = 1.1;
+    
+    const kitchenClosingSound = new Audio(KitchenClosingAnnounceMP3);
+    kitchenClosingSound.volume = 0.5;
+    kitchenClosingSound.preservesPitch = false;
+    kitchenClosingSound.playbackRate = 0.96;
+
+    plingSound.play().then(() => {
+      setTimeout(() => {
+        kitchenClosingSound.play().catch(console.warn);
+      }, 1400);
+    }).catch(console.warn);
+  }
 
   /** 
    * 1시 30분(월요일은 1시)이 되면 1회성 주방 마감 예정 Toast
@@ -48,6 +68,8 @@ function KitchenStatusToaster() {
         isInfinite: true,
         isFlicker: true,
       });
+
+      playKitchenClosingSound();
 
       setStatus({
         status: 'closing',
