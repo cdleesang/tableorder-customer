@@ -27,12 +27,14 @@ function Header() {
   return (
     <>
       <div className="header">
-        <div
-          className="brand"
-          onClick={() => window.location.href = '/'}
-        >
-          <img className="logo" src={logo} alt="logo" />
-          <span className="brand-name">청담이상</span>
+        <div className="brand">
+          <div
+            className="brand-wrapper"
+            onClick={() => window.location.href = '/'}
+          >
+            <img className="logo" src={logo} alt="logo" />
+            <span className="brand-name">청담이상</span>
+          </div>
         </div>
         <button
           className="call-staff-btn"
