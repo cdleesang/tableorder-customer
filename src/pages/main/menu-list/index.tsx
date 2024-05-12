@@ -1,83 +1,55 @@
 import api from '@cdleesang/tableorder-api-sdk';
 import { Menu } from '@cdleesang/tableorder-api-sdk/lib/structures/Menu';
-import { useEffect, useRef, useState } from 'react';
-import { RingSpinner } from 'react-spinner-overlay';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { toast } from '../../../components/toast-container/utils/toast';
-import { useConnection } from '../../../service/connection';
-import { currentCategoryState, currentViewMenuIdState } from '../../../store/state';
-import './index.scss';
-import { priceComma } from '../../../utils/price-comma';
 import moment from 'moment';
+import { useEffect, useRef, useState } from 'react';
+import { createSearchParams, useSearchParams } from 'react-router-dom';
+import { RingSpinner } from 'react-spinner-overlay';
+import { priceComma } from '../../../common/utils/price-comma';
+import { toast } from '../../../components/toast-container/utils/toast';
+import { useConnection } from '../../../hooks/use-connection';
+import useViewTransitionNavigate from '../../../hooks/use-view-transition-navigate';
+import { ROUTES } from '../../../route/routes';
+import './index.scss';
+import Breadcrumb from './breadcrumb';
 
-function Breadcrumb() {
-  const [currentCategory, setCurrentCategory] = useRecoilState(currentCategoryState);
 
-  return currentCategory
-    ? (
-      <div className={`breadcrumb`}>
-        <div
-          className="badge main-category"
-          onClick={() => {
-            setCurrentCategory({
-              mainCategory: currentCategory.mainCategory
-            });
-          }}
-        >
-          {currentCategory.mainCategory.name}
-        </div>
-        {
-          currentCategory.subCategory && <>
-            <div className="divider" />
-            <div className="badge sub-category" onClick={() => {
-              setCurrentCategory(currentCategory);
-            }}>
-              {currentCategory.subCategory.name}
-            </div>
-          </>
-        }
-      </div>)
-    : <></>;
-}
 
 function MenuList() {
-  const setCurrentViewMenuId = useSetRecoilState(currentViewMenuIdState);
-  const currentCategory = useRecoilValue(currentCategoryState);
+  const [searchParams] = useSearchParams();
+  const mainCategoryId = searchParams.get('mainCategoryId') || '';
+  const subCategoryId = searchParams.get('subCategoryId') || '';
   const [menus, setMenus] = useState<Menu[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
+  const navigator = useViewTransitionNavigate();
   const connection = useConnection();
 
   const page = useRef<number>(1);
   const hasMore = useRef<boolean>(true);
-  const currentCategoryRef = useRef(currentCategory);
 
-  function fetchMenus() {
-    if(isLoading) return;
-    if(!currentCategoryRef.current) return;
-    if(!hasMore.current) return;
+  async function fetchMenus() {
+    if(isLoading || !mainCategoryId || !hasMore.current) return;
 
     setIsLoading(true);
 
-    api.functional.menu.getPaginatedMenusByCategory(connection, {
-      page: page.current,
-      categoryId: currentCategoryRef.current.mainCategory.id,
-      subCategoryId: currentCategoryRef.current?.subCategory?.id,
-    }).then(({ menus }) => {
-      setMenus(prevMenus => [...prevMenus, ...menus]);
-      setIsLoading(false);
-    }).catch((err) => {
-      setIsLoading(false);
+    try {
+      const {menus} = await api.functional.menu.getPaginatedMenusByCategory(connection, {
+        page: page.current,
+        categoryId: parseInt(searchParams.get('mainCategoryId') || '', 10),
+        subCategoryId: searchParams.get('subCategoryId') ? parseInt(searchParams.get('subCategoryId') || '', 10) : undefined,
+      });
 
+      setMenus(prevMenus => [...prevMenus, ...menus]);
+    } catch(err) {
       if(err instanceof api.HttpError && err.status === 404) {
         hasMore.current = false;
-        return;
+      } else {
+        localStorage.setItem('getPaginatedMenus', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+        toast('error', '메뉴를 불러오는 중 오류가 발생했습니다.')
       }
+    }
 
-      localStorage.setItem('getPaginatedMenus', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
-      toast('error', '메뉴를 불러오는 중 오류가 발생했습니다.');
-    });
-
+    setIsLoading(false);
     page.current++;
   }
 
@@ -89,25 +61,25 @@ function MenuList() {
     });
 
     const observerTarget = observerRef.current;
+    
+    page.current = 1;
+    hasMore.current = true;
+    setMenus([]);
+    fetchMenus().then(() => {
+      if(observerTarget) {
+        observer.observe(observerTarget);
+      }
+    });
 
-    if(observerTarget) {
-      observer.observe(observerTarget);
+    return () => {
+      if(observerTarget) {
+        observer.unobserve(observerTarget);
+      }
     }
-  }, []);
-
-  useEffect(() => {
-    currentCategoryRef.current = currentCategory;
-
-    if(currentCategory) {
-      page.current = 1;
-      hasMore.current = true;
-      setMenus([]);
-      fetchMenus();
-    }
-  }, [currentCategory, currentCategory?.mainCategory?.id, currentCategory?.subCategory?.id]);
+  }, [mainCategoryId, subCategoryId]);
 
   return (
-    <div className="menu-list">
+    <div className="menu-list" key={`${mainCategoryId}_${subCategoryId}`}>
       <Breadcrumb />
       <div className="card-container">
         {
@@ -115,9 +87,25 @@ function MenuList() {
             <div
               className="card"
               key={menu.id}
-              onClick={() => setCurrentViewMenuId(menu.id)}
+              onClick={() => {
+                navigator({
+                  pathname: ROUTES.MAIN,
+                  search: createSearchParams({
+                    mainCategoryId,
+                    subCategoryId,
+                    menuId: menu.id.toString(),
+                  }).toString(),
+                });
+              }}
             >
-              <div className={`card-image${menu.isSoldOut ? ' sold-out' : ''}`} style={{backgroundImage: `url(${menu.imageUrl})`}} />
+              <div
+                className={`card-image ${menu.isSoldOut ? 'sold-out' : ''}`}
+                style={{
+                  backgroundImage: `url(${menu.imageUrl})`,
+                  // FIXME
+                  // viewTransitionName: `menu-img_${menu.id}`,
+                }}
+              />
               <div className="card-body">
                 <div className="card-title" dangerouslySetInnerHTML={{__html: menu.name}} />
                 <div className="card-price">{priceComma(menu.price||0)}원</div>

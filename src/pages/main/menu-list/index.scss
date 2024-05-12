@@ -7,29 +7,6 @@
   $padding-x: 3%;
   gap: .7em;
   border-radius: 15px 15px 0 0;
-
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 0;
-    padding: .7em $padding-x 0 $padding-x;
-
-    .badge {
-      border-radius: 15px;
-      background-color: $primary-color;
-      color: $font-color;
-      font-weight: bold;
-      font-size: .9em;
-      padding: 6px 8px;
-    }
-    
-    .divider {
-      width: 2px;
-      height: 20px;
-      background-color: $primary-color;
-    }
-  }
   
   .infinite-scroll-component__outerdiv {
     flex: 1;

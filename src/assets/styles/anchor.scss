@@ -1,0 +1,14 @@
+@mixin anchor($color: $color-primary) {
+  color: $color;
+  text-decoration: none;
+
+  &:hover {
+    color: darken($color, 10%);
+  }
+  &:link {
+    color: $color;
+  }
+  &:visited {
+    color: $color;
+  }
+}

@@ -1,5 +1,5 @@
 import { IConnection } from '@cdleesang/tableorder-api-sdk';
-import { API_URL } from '../constants/constant';
+import { API_URL } from '../common/constants/constant';
 import { tableNoKey } from '../store/state';
 
 export function useConnection(): IConnection<{

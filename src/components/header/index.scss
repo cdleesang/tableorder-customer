@@ -3,15 +3,17 @@
   display: flex;
   align-items: center;
   padding: 1% 1.3%;
-
+  
   .brand {
     flex: 1;
     
     &-wrapper {
       display: inline-flex;
       align-items: center;
-      gap: 2%;
+      gap: 5%;
       
+      @include anchor($font-color);
+
       .logo {
         height: 40px;
       }
@@ -33,6 +35,7 @@
       background-color: rgba($point-color, .75);
     }
   }
+
   .table-info {
     flex: 1;
     display: flex;

@@ -1,9 +1,8 @@
 import ReactDOM from 'react-dom/client';
-import 'react-toastify/dist/ReactToastify.css';
 import { RecoilRoot } from 'recoil';
-import App from './app';
 import './index.scss';
 import reportWebVitals from './reportWebVitals';
+import Router from './route/router';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const root = ReactDOM.createRoot(
@@ -13,7 +12,7 @@ const root = ReactDOM.createRoot(
 root.render(
   // <React.StrictMode>
     <RecoilRoot>
-      <App />
+      <Router />
     </RecoilRoot>
   // </React.StrictMode>
 );

@@ -1,24 +1,29 @@
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import './index.scss';
-import { cartState, currentViewMenuIdState } from '../../../store/state';
-import { useEffect, useState } from 'react';
-import { MenuDetail } from '@cdleesang/tableorder-api-sdk/lib/structures/MenuDetail';
 import api from '@cdleesang/tableorder-api-sdk';
-import { useConnection } from '../../../service/connection';
-import { toast } from '../../../components/toast-container/utils/toast';
-import { priceComma } from '../../../utils/price-comma';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import MenuOptionGroup from './menu-option-group';
+import { MenuDetail } from '@cdleesang/tableorder-api-sdk/lib/structures/MenuDetail';
 import { OrderImmediatelyBody } from '@cdleesang/tableorder-api-sdk/lib/structures/OrderImmediatelyBody';
-import { RingSpinner } from 'react-spinner-overlay';
+import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useSearchParams, createSearchParams } from 'react-router-dom';
+import { RingSpinner } from 'react-spinner-overlay';
+import { useSetRecoilState } from 'recoil';
+import { priceComma } from '../../../common/utils/price-comma';
+import { toast } from '../../../components/toast-container/utils/toast';
+import { useConnection } from '../../../hooks/use-connection';
+import { cartState } from '../../../store/state';
+import './index.scss';
+import MenuOptionGroup from './menu-option-group';
+import useViewTransitionNavigate from '../../../hooks/use-view-transition-navigate';
+import { ROUTES } from '../../../route/routes';
 
 function MenuModal() {
-  const [currentViewMenuId, setCurrentViewMenuId] = useRecoilState(currentViewMenuIdState);
   const [isOrdering, setIsOrdering] = useState(false);
   const [isCartAdding, setIsCartAdding] = useState(false);
   const [menu, setMenu] = useState<MenuDetail | undefined>(undefined);
+  const [searchParams] = useSearchParams();
+  const navigator = useViewTransitionNavigate();
+  const menuId = parseInt(searchParams.get('menuId') || '');
   const [quantity, setQuantity] = useState(1);
   const [selectedMainOptionId, setSelectedMainOptionId] = useState<number | undefined>(undefined);
   const [selectedSubOptionIds, setSelectedSubOptionIds] = useState<{
@@ -86,8 +91,18 @@ function MenuModal() {
     return true;
   }
 
+  function closeMenuModal() {
+    navigator({
+      pathname: ROUTES.MAIN,
+      search: createSearchParams({
+        ...Object.fromEntries(searchParams),
+        menuId: '',
+      }).toString(),
+    });
+  }
+
   useEffect(() => {
-    api.functional.menu.getMenuDetailById(connection, currentViewMenuId!)
+    api.functional.menu.getMenuDetailById(connection, menuId)
       .then(menuDetail => {
         setMenu(menuDetail);
         setSelectedMainOptionId(menuDetail.mainOptions[0].id);
@@ -108,7 +123,7 @@ function MenuModal() {
 
   return (
     <>
-      <div className="menu-modal-backdrop" onClick={() => setCurrentViewMenuId(undefined)} />
+      <div className="menu-modal-backdrop" onClick={closeMenuModal} />
       <div className="menu-modal">
         {
           menu && (
@@ -116,7 +131,14 @@ function MenuModal() {
               ? <>
                 <div className="menu-container">
                   <div className="menu-header">
-                    <div className={`menu-img${menu.isSoldOut ? ' sold-out' : ''}`} style={{backgroundImage: `url(${menu.imageUrl})`}} />
+                    <div
+                      className={`menu-img ${menu.isSoldOut ? 'sold-out' : ''}`}
+                      style={{
+                        backgroundImage: `url(${menu.imageUrl})`,
+                        // FIXME
+                        viewTransitionName: `menu-img_${menu.id}`,
+                      }}
+                    />
                     <div className="menu-info">
                       <div className="menu-name" dangerouslySetInnerHTML={{__html: menu.name}} />
                       <div className="menu-description" dangerouslySetInnerHTML={{__html: menu.description}} />
@@ -270,7 +292,7 @@ function MenuModal() {
                             ...prev,
                           ]);
                           setIsCartAdding(false);
-                          setCurrentViewMenuId(undefined);
+                          closeMenuModal();
                         }).catch(err => {
                           setIsCartAdding(false);
                           if(err instanceof api.HttpError && err.status === 409) {
@@ -318,7 +340,7 @@ function MenuModal() {
                         }).then(() => {
                           toast('success', '주문이 완료되었습니다.');
                           setIsOrdering(false);
-                          setCurrentViewMenuId(undefined);
+                          closeMenuModal();
                         }).catch((err) => {
                           localStorage.setItem('order', JSON.stringify(err));
 

@@ -5,11 +5,12 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { RingSpinner } from 'react-spinner-overlay';
 import { useSetRecoilState } from 'recoil';
-import { toast } from '../../../components/toast-container/utils/toast';
-import { useConnection } from '../../../service/connection';
-import { isOrderHistoryModalOpenState } from '../../../store/state';
-import { priceComma } from '../../../utils/price-comma';
+import { toast } from '../toast-container/utils/toast';
+import { useConnection } from '../../hooks/use-connection';
+import { isOrderHistoryModalOpenState } from '../../store/state';
+import { priceComma } from '../../common/utils/price-comma';
 import './index.scss';
+import Modal from '../modal';
 
 type orderHistories = {
   orderTime: Date;
@@ -76,10 +77,8 @@ function OrderHistoryModal() {
   }, []);
 
   return (
-    <>
-      <div className="order-history-backdrop" onClick={() => setIsOrderHistoryModalOpen(false)}></div>
-      <div className="order-history">
-        <div className="order-history-header">
+    <Modal className="order-history" close={() => setIsOrderHistoryModalOpen(false)}>
+      <div className="order-history-header">
           <h2 className="order-history-title">
             주문 내역
             <div className="desc" style={{fontSize: '.6em', opacity: .5}}>
@@ -141,8 +140,7 @@ function OrderHistoryModal() {
                 </div>
           }
         </div>
-      </div>
-    </>
+    </Modal>
   );
 }
 
