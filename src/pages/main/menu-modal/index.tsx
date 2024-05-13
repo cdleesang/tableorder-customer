@@ -133,11 +133,7 @@ function MenuModal() {
                   <div className="menu-header">
                     <div
                       className={`menu-img ${menu.isSoldOut ? 'sold-out' : ''}`}
-                      style={{
-                        backgroundImage: `url(${menu.imageUrl})`,
-                        // FIXME
-                        viewTransitionName: isTransitioning ? `menu-img` : "",
-                      }}
+                      style={{backgroundImage: `url(${menu.imageUrl})`,}}
                     />
                     <div className="menu-info">
                       <div className="menu-name" dangerouslySetInnerHTML={{__html: menu.name}} />

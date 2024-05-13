@@ -10,8 +10,9 @@ function Modal({children, close, className}: ModalProps) {
   return (
     <>
       <div className='modal-backdrop' onClick={close} />
+      <div className={`fade-box ${className}`} />
       <div className={`modal ${className}`}>
-        {children}
+          {children}
       </div>
     </>
   );
