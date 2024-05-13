@@ -1,35 +1,23 @@
-.settings-modal-backdrop {
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba($primary-color, .7);
-}
-
 .settings-modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: $primary-color;
-  padding: 1em;
-  border-radius: 1em;
-  max-height: 80vh;
-  overflow-y: auto;
-  
+  height: auto;
+  width: auto;
+
   .settings {
     display: flex;
     flex-direction: column;
     gap: 50px;
+    width: 40vw;
 
     .tno-input {
       display: flex;
       justify-content: space-between;
+
       label {
         flex: 1;
       }
       input {
         width: 10%;
+        height: 25px;
         border-radius: none;
         text-align: right;
 
@@ -37,12 +25,6 @@
           outline: none;
         }
       }
-    }
-
-    .clean-up {
-      font-weight: 500;
-      background-color: $point-color;
-      color: $font-color;
     }
 
     .refresh {

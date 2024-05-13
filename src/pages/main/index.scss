@@ -1,9 +1,15 @@
 .main {
-  height: 100%;
+  view-transition-name: main;
+  background-color: $primary-color;
   display: flex;
-  flex-direction: column;
+}
 
-  section {
-    display: flex;
-  }
+::view-transition-group(main) {
+  animation-duration: .5s;
+}
+::view-transition-old(main) {
+  animation-name: fade-out;
+}
+::view-transition-new(main) {
+  animation-name: fade-in;
 }

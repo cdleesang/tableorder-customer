@@ -1,9 +1,5 @@
+import { MenuCategory } from '@cdleesang/tableorder-api-sdk/lib/structures/MenuCategory';
 import { atom } from 'recoil';
-
-export const isIdleState = atom<boolean>({
-  key: 'isIdle',
-  default: true,
-})
 
 export const tableNoKey = 'tableNo';
 export const tableNoState = atom<number | undefined>({
@@ -18,24 +14,9 @@ export const tableNoState = atom<number | undefined>({
   ]
 });
 
-export const currentCategoryState = atom<{
-  mainCategory: {
-    id: number,
-    name: string,
-  },
-  subCategory?: {
-    id: number,
-    name: string,
-  },
-} | undefined>({
-  key: 'currentCategory',
-  default: undefined,
-  // {
-  //   mainCategory: {
-  //     id: -1,
-  //     name: '전체',
-  //   },
-  // },
+export const menuCategoriesState = atom<MenuCategory[]>({
+  key: 'menuCategories',
+  default: [],
 });
 
 export const openedCategoriesState = atom<{[key: number]: boolean}>({
@@ -71,11 +52,6 @@ export const cartState = atom<{
 export const isOrderHistoryModalOpenState = atom<boolean>({
   key: 'isOrderHistoryModalOpen',
   default: false,
-});
-
-export const currentViewMenuIdState = atom<number | undefined>({
-  key: 'currentViewMenuId',
-  default: undefined,
 });
 
 export const isCallStaffModalOpenState = atom<boolean>({

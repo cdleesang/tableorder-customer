@@ -1,18 +1,21 @@
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import api from '@cdleesang/tableorder-api-sdk';
 import { MenuCategory } from '@cdleesang/tableorder-api-sdk/lib/structures/MenuCategory';
-import { useEffect, useState } from 'react';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import moment from 'moment';
+import { useEffect } from 'react';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { toast } from '../../../components/toast-container/utils/toast';
-import { useConnection } from '../../../service/connection';
-import { currentCategoryState, openedCategoriesState } from '../../../store/state';
+import { useConnection } from '../../../hooks/use-connection';
+import { ROUTES } from '../../../route/routes';
+import { menuCategoriesState, openedCategoriesState } from '../../../store/state';
 import './index.scss';
-import moment from 'moment';
 
 function Navigation() {
-  const [currentCategory, setCurrentCategory] = useRecoilState(currentCategoryState);
-  const [categories, setCategories] = useState<MenuCategory[]>([]);
+  const [searchParams] = useSearchParams();
+  const navigator = useNavigate();
+  const [categories, setCategories] = useRecoilState<MenuCategory[]>(menuCategoriesState);
   const [openedCategories, setOpenedCategories] = useRecoilState(openedCategoriesState);
   const connection = useConnection();
   
@@ -31,15 +34,20 @@ function Navigation() {
       <div className="nav">
         {
           categories.map(mainCategory => (
-            <div className="nav-item item" key={mainCategory.id}>
+            <div
+              className={`nav-item item ${searchParams.get('mainCategoryId') === mainCategory.id.toString() ? 'selected' : ''}`}
+              key={mainCategory.id}>
               <div className="item-title">
                 <span
                   onClick={() => {
                     setOpenedCategories(prev => ({
                       ...prev, [mainCategory.id]: !prev[mainCategory.id]})
                     );
-                    setCurrentCategory({
-                      mainCategory: {id: mainCategory.id, name: mainCategory.name}
+                    navigator({
+                      pathname: ROUTES.MAIN,
+                      search: createSearchParams({
+                        mainCategoryId: mainCategory.id.toString(),
+                      }).toString(),
                     });
                   }}
                 >
@@ -64,24 +72,34 @@ function Navigation() {
               </div>
               {
                 mainCategory.subCategories.length > 1
-                  && <div className={`item-body${openedCategories[mainCategory.id] ? ' opened' : ''}`}>
+                  && <div className={`item-body ${openedCategories[mainCategory.id] ? 'opened' : ''}`}>
                     <div
-                      className={`sub-category ${currentCategory?.mainCategory.id === mainCategory.id && !currentCategory?.subCategory ? 'selected' : ''}`}
-                      onClick={() => setCurrentCategory({
-                        mainCategory: {id: mainCategory.id, name: mainCategory.name},
-                      })}
+                      className={`sub-category ${searchParams.get('mainCategoryId') === mainCategory.id.toString() && !searchParams.get('subCategoryId') ? 'selected' : ''}`}
+                      onClick={() => {
+                        navigator({
+                          pathname: ROUTES.MAIN,
+                          search: createSearchParams({
+                            mainCategoryId: mainCategory.id.toString(),
+                          }).toString(),
+                        });
+                      }}
                     >
                       전체
                     </div>
                     {
                       mainCategory.subCategories.map(subCategory => (
                         <div
-                          className={`sub-category ${currentCategory?.subCategory?.id === subCategory.id ? 'selected' : ''}`}
+                          className={`sub-category ${searchParams.get('subCategoryId') === subCategory.id.toString() ? 'selected' : ''}`}
                           key={subCategory.id}
-                          onClick={() => setCurrentCategory({
-                            mainCategory: {id: mainCategory.id, name: mainCategory.name},
-                            subCategory: {id: subCategory.id, name: subCategory.name},
-                          })}
+                          onClick={() => {
+                            navigator({
+                              pathname: ROUTES.MAIN,
+                              search: createSearchParams({
+                                mainCategoryId: mainCategory.id.toString(),
+                                subCategoryId: subCategory.id.toString(),
+                              }).toString(),
+                            });
+                          }}
                         >
                           {subCategory.name}
                         </div>
