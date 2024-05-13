@@ -1,6 +1,5 @@
-import { createSearchParams, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import useViewTransitionNavigate from '../../../../hooks/use-view-transition-navigate';
 import { ROUTES } from '../../../../route/routes';
 import { menuCategoriesState } from '../../../../store/state';
 import './index.scss';
@@ -8,7 +7,7 @@ import './index.scss';
 
 function Breadcrumb() {
   const [searchParams] = useSearchParams();
-  const navigator = useViewTransitionNavigate();
+  const navigator = useNavigate();
   const categories = useRecoilValue(menuCategoriesState);
   const currentMainCategory = categories.find(category => category.id === parseInt(searchParams.get('mainCategoryId') || ''));
   const currentSubCategory = currentMainCategory?.subCategories.find(subCategory => subCategory.id === parseInt(searchParams.get('subCategoryId') || ''));

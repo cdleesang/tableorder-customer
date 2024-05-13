@@ -2,15 +2,14 @@ import api from '@cdleesang/tableorder-api-sdk';
 import { Menu } from '@cdleesang/tableorder-api-sdk/lib/structures/Menu';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
-import { createSearchParams, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { RingSpinner } from 'react-spinner-overlay';
 import { priceComma } from '../../../common/utils/price-comma';
 import { toast } from '../../../components/toast-container/utils/toast';
 import { useConnection } from '../../../hooks/use-connection';
-import useViewTransitionNavigate from '../../../hooks/use-view-transition-navigate';
 import { ROUTES } from '../../../route/routes';
-import './index.scss';
 import Breadcrumb from './breadcrumb';
+import './index.scss';
 
 
 
@@ -21,7 +20,7 @@ function MenuList() {
   const [menus, setMenus] = useState<Menu[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
-  const navigator = useViewTransitionNavigate();
+  const navigator = useNavigate();
   const connection = useConnection();
 
   const page = useRef<number>(1);

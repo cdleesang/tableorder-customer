@@ -5,24 +5,24 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { useSearchParams, createSearchParams } from 'react-router-dom';
+import { createSearchParams, unstable_useViewTransitionState, useNavigate, useSearchParams } from 'react-router-dom';
 import { RingSpinner } from 'react-spinner-overlay';
 import { useSetRecoilState } from 'recoil';
 import { priceComma } from '../../../common/utils/price-comma';
 import { toast } from '../../../components/toast-container/utils/toast';
 import { useConnection } from '../../../hooks/use-connection';
+import { ROUTES } from '../../../route/routes';
 import { cartState } from '../../../store/state';
 import './index.scss';
 import MenuOptionGroup from './menu-option-group';
-import useViewTransitionNavigate from '../../../hooks/use-view-transition-navigate';
-import { ROUTES } from '../../../route/routes';
 
 function MenuModal() {
+  const isTransitioning = unstable_useViewTransitionState(ROUTES.MAIN);
   const [isOrdering, setIsOrdering] = useState(false);
   const [isCartAdding, setIsCartAdding] = useState(false);
   const [menu, setMenu] = useState<MenuDetail | undefined>(undefined);
   const [searchParams] = useSearchParams();
-  const navigator = useViewTransitionNavigate();
+  const navigator = useNavigate();
   const menuId = parseInt(searchParams.get('menuId') || '');
   const [quantity, setQuantity] = useState(1);
   const [selectedMainOptionId, setSelectedMainOptionId] = useState<number | undefined>(undefined);
@@ -136,7 +136,7 @@ function MenuModal() {
                       style={{
                         backgroundImage: `url(${menu.imageUrl})`,
                         // FIXME
-                        viewTransitionName: `menu-img_${menu.id}`,
+                        viewTransitionName: isTransitioning ? `menu-img` : "",
                       }}
                     />
                     <div className="menu-info">

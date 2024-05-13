@@ -8,6 +8,12 @@
   padding-bottom: 2em;
 
   .item {
+    &.selected {
+      .item-title {
+        background-color: rgba($secondary-color, .7);
+      }
+    }
+
     &-title {
       height: 56px;
       display: flex;

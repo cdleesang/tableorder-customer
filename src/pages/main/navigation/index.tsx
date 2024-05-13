@@ -4,18 +4,17 @@ import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import { useEffect } from 'react';
-import { useSearchParams, createSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { toast } from '../../../components/toast-container/utils/toast';
 import { useConnection } from '../../../hooks/use-connection';
+import { ROUTES } from '../../../route/routes';
 import { menuCategoriesState, openedCategoriesState } from '../../../store/state';
 import './index.scss';
-import useViewTransitionNavigate from '../../../hooks/use-view-transition-navigate';
-import { ROUTES } from '../../../route/routes';
 
 function Navigation() {
   const [searchParams] = useSearchParams();
-  const navigator = useViewTransitionNavigate();
+  const navigator = useNavigate();
   const [categories, setCategories] = useRecoilState<MenuCategory[]>(menuCategoriesState);
   const [openedCategories, setOpenedCategories] = useRecoilState(openedCategoriesState);
   const connection = useConnection();
@@ -35,7 +34,9 @@ function Navigation() {
       <div className="nav">
         {
           categories.map(mainCategory => (
-            <div className="nav-item item" key={mainCategory.id}>
+            <div
+              className={`nav-item item ${searchParams.get('mainCategoryId') === mainCategory.id.toString() ? 'selected' : ''}`}
+              key={mainCategory.id}>
               <div className="item-title">
                 <span
                   onClick={() => {
@@ -71,7 +72,7 @@ function Navigation() {
               </div>
               {
                 mainCategory.subCategories.length > 1
-                  && <div className={`item-body${openedCategories[mainCategory.id] ? ' opened' : ''}`}>
+                  && <div className={`item-body ${openedCategories[mainCategory.id] ? 'opened' : ''}`}>
                     <div
                       className={`sub-category ${searchParams.get('mainCategoryId') === mainCategory.id.toString() && !searchParams.get('subCategoryId') ? 'selected' : ''}`}
                       onClick={() => {
