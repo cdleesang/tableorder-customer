@@ -46,26 +46,24 @@
       background-color: rgba($secondary-color, .5);
       display: flex;
       flex-direction: column;
-      $gap: .9em;
+      $gap: .45em;
       max-height: 0;
       overflow: hidden;
-      transition: max-height .5s ease-in-out;
+      transition-property: max-height padding;
+      transition-duration: .5s;
+      transition-timing-function: ease-in-out;
 
       &.opened {
         // FIXME: max-height가 고정값이라서 짧은 내용은 줄어드는데 오래걸림
         max-height: 500px;
+        padding-top: $gap;
+        padding-bottom: $gap;
       }
   
       .sub-category {
         word-break: auto-phrase;
-        padding: $gap/2 $gap/2 $gap/2 2em;
+        padding: $gap $gap $gap 2em;
 
-        &:first-child {
-          padding-top: $gap;
-        }
-        &:last-child {
-          padding-bottom: $gap;
-        }
         &.selected {
           background-color: $font-color;
           color: $secondary-color;

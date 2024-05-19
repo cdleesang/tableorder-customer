@@ -1,14 +1,14 @@
-import { faCartShopping, faMinus, faPlus, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import api from '@cdleesang/tableorder-api-sdk';
+import { faCartShopping, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from 'react';
+import { RingSpinner } from 'react-spinner-overlay';
 import { useRecoilState } from 'recoil';
-import { priceComma } from '../../../common/utils/price-comma';
 import { toast } from '../../../components/toast-container/utils/toast';
 import { useConnection } from '../../../hooks/use-connection';
 import { cartState } from '../../../store/state';
 import './index.scss';
-import { RingSpinner } from 'react-spinner-overlay';
+import CartItem from './item';
 
 function Cart() {
   const [cartItems, setCartItems] = useRecoilState(cartState);
@@ -41,95 +41,47 @@ function Cart() {
       <div className="cart-body">
         {
           cartItems.length > 0
-            ? <>
-              {
-                cartItems.map(item => (
-                  <div className="cart-item" key={item.id}>
-                    <div className="item-top">
-                      <img className="menu-img" src={item.imageUrl} alt="메뉴 사진" />
-                      <div className="menu-info">
-                        <div className="menu-name-box">
-                          <div className="menu-name">{item.menuName}</div>
-                          <button className="delete-btn" type='button' onClick={() => {
-                            api.functional.cart.deleteItemById(connection, item.id)
-                              .then(() => {
-                                setCartItems(prev => prev.filter(cartItem => cartItem.id !== item.id))
-                              })
-                              .catch(() => {
-                                toast('error', '메뉴를 삭제하는 중 오류가 발생했습니다');
-                              })
-                          }}>
-                            <FontAwesomeIcon icon={faXmark} />
-                          </button>
-                        </div>
-                        <div className="menu-price">{priceComma(item.menuTotalPrice)}원</div>
-                      </div>
-                    </div>
-                    <div className="item-bottom">
-                      <div className="item-options">
-                        {
-                          [
-                            {
-                              groupId: 'main',
-                              optionId: item.menuMainOption.id,
-                              optionName: item.menuMainOption.name,
-                              optionPrice: item.menuMainOption.price,
-                            }, 
-                            ...item.menuSubOptions
-                          ].map(option => (
-                            <div className="option" key={`${option.groupId}_${option.optionId}`}>
-                              <span className="option-name">{option.optionName}</span>
-                              <span className="option-price">{priceComma(option.optionPrice)}원</span>
-                            </div>
-                          ))
-                        }
-                      </div>
-                      <div className="item-count">
-                        <div
-                          className="minus"
-                          onClick={() => {
-                            setCartItems(prev => prev.map(cartItem => {
-                              if(cartItem.id === item.id) {
-                                const newAmount = Math.max(1, item.menuAmount - 1);
-
-                                return {
-                                  ...cartItem,
-                                  menuAmount: newAmount,
-                                  menuTotalPrice: cartItem.menuTotalPrice / cartItem.menuAmount * newAmount,
-                                };
-                              }
-                              return cartItem;
-                            }))
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faMinus} />
-                        </div>
-                        <span className="counter">{item.menuAmount}</span>
-                        <div
-                          className="plus"
-                          onClick={() => {
-                            setCartItems(prev => prev.map(cartItem => {
-                              if(cartItem.id === item.id) {
-                                const newAmount = item.menuAmount + 1;
-
-                                return {
-                                  ...cartItem,
-                                  menuAmount: newAmount,
-                                  menuTotalPrice: cartItem.menuTotalPrice / cartItem.menuAmount * newAmount,
-                                };
-                              }
-                              return cartItem;
-                            }))
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))
+            ? cartItems.map(item => <CartItem
+              key={item.id}
+              {...item}
+              delete={
+                () => api.functional.cart.deleteItemById(connection, item.id)
+                  .then(() => {
+                    setCartItems(prev => prev.filter(cartItem => cartItem.id !== item.id))
+                  })
+                  .catch(() => {
+                    toast('error', '메뉴를 삭제하는 중 오류가 발생했습니다');
+                  })
               }
-            </>
+              increase={
+                () => setCartItems(prev => prev.map(cartItem => {
+                  if(cartItem.id === item.id) {
+                    const newAmount = item.menuAmount + 1;
+  
+                    return {
+                      ...cartItem,
+                      menuAmount: newAmount,
+                      menuTotalPrice: cartItem.menuTotalPrice / cartItem.menuAmount * newAmount,
+                    };
+                  }
+                  return cartItem;
+                }))
+              }
+              decrease={
+                () => setCartItems(prev => prev.map(cartItem => {
+                  if(cartItem.id === item.id) {
+                    const newAmount = Math.max(1, item.menuAmount - 1);
+  
+                    return {
+                      ...cartItem,
+                      menuAmount: newAmount,
+                      menuTotalPrice: cartItem.menuTotalPrice / cartItem.menuAmount * newAmount,
+                    };
+                  }
+                  return cartItem;
+                }))
+              }
+            />)
             : <div className="empty">
               <span><FontAwesomeIcon icon={faCartShopping}/></span>
               <span>장바구니가<br/>텅 비었어요</span>
