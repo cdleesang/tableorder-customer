@@ -7,7 +7,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1em;
+    padding: .3em;
     border-bottom: 1px solid $secondary-color;
 
     .order-history-title {
@@ -22,7 +22,7 @@
   }
 
   &-list {
-    padding: 1em;
+    padding: .3em;
     flex: 1;
     overflow-y: auto;
     display: flex;
