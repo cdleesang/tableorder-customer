@@ -84,7 +84,7 @@ function MenuList() {
         {
           menus.map(menu => (
             <div
-              className="card"
+              className={`card ${menu.isSoldOut ? 'sold-out' : ''}`}
               key={menu.id}
               onClick={() => {
                 navigator({
@@ -98,12 +98,8 @@ function MenuList() {
               }}
             >
               <div
-                className={`card-image ${menu.isSoldOut ? 'sold-out' : ''}`}
-                style={{
-                  backgroundImage: `url(${menu.imageUrl})`,
-                  // FIXME
-                  // viewTransitionName: `menu-img_${menu.id}`,
-                }}
+                className={`card-image`}
+                style={{backgroundImage: `url(${menu.imageUrl})`}}
               />
               <div className="card-body">
                 <div className="card-title" dangerouslySetInnerHTML={{__html: menu.name}} />

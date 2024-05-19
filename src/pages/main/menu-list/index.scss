@@ -21,27 +21,54 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-auto-rows: min-content;
     font-size: 1.4em;
-    gap: 5%;
+    gap: 6%;
     padding: 5px $padding-x .7em $padding-x;
     position: relative;
+    align-items: start;
 
     .card {
-      $radius: 15px;
+      $radius: 10px;
       box-shadow: 1px 1px 10px rgba($button-color, 0.5);
       border-radius: $radius;
       display: flex;
       flex-direction: column;
+      background-color: $primary-color;
 
       &-image {
         width: 100%;
-        aspect-ratio: 1/.8;
+        aspect-ratio: 1/.75;
         background-size: cover;
         background-position: center;
         border-radius: inherit;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+      }
+      
+      &-body {
+        flex: 1;
+        font-size: .8em;
+        border-radius: 0 0 $radius $radius;
+        padding: .4em .6em;
+        color: $font-color;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
 
-        &.sold-out {
+      &-title {
+        font-weight: 600;
+        font-size: 1em;
+        margin-bottom: .5em;
+      }
+
+      &-price {
+        font-weight: 500;
+        text-align: end;
+        font-size: .8em;
+      }
+
+      &.sold-out {
+        box-shadow: none;
+
+        .card-image {
           position: relative;
 
           &::before {
@@ -51,7 +78,7 @@
             height: 100%;
             background-color: $primary-color;
             border-radius: inherit;
-            opacity: .8;
+            opacity: .9;
           }
 
           &::after {
@@ -62,33 +89,14 @@
             text-align: center;
             width: 100%;
             color: $font-color;
-            font-size: 1.5em;
-            font-weight: bold;
+            font-size: 1.1em;
+            font-weight: 500;
           }
         }
-      }
-      
-      &-body {
-        flex: 1;
-        font-size: .8em;
-        background-color: $primary-color;
-        border-radius: 0 0 $radius $radius;
-        padding: .6em .8em;
-        color: $font-color;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
 
-      &-title {
-        font-weight: bold;
-        font-size: 1.1em;
-        margin-bottom: .5em;
-      }
-
-      &-price {
-        text-align: end;
-        font-size: .8em;
+        .card-body {
+          opacity: .5;
+        }
       }
     }
 

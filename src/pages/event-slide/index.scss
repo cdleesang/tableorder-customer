@@ -1,33 +1,13 @@
-@keyframes show {
-  0% {
-    display: block;
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes hide {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-  }
-}
-
 .event-slide {
   animation: fade-in 1s ease-in-out forwards;
 
   .loader {
     &.show {
-      animation: show 1s ease-in-out forwards;
+      animation: fade-in 1s ease-in-out forwards;
     }
   
     &.hidden {
-      animation: hide 1s ease-in-out forwards;
+      animation: fade-out 1s ease-in-out forwards;
     }
     
     // loader dot
@@ -35,7 +15,7 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(1.2);
+      transform: translate(-50%, -50%);
 
       > div {
         background-color: $point-color !important;
@@ -78,7 +58,8 @@
       position: absolute;
       z-index: 1;
       bottom: 1.2%;
-      right: 1%;
+      left: 50%;
+      transform: translateX(-50%);
       min-width: 90px;
       $height: 35px;
       height: $height;
