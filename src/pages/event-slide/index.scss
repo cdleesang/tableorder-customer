@@ -19,15 +19,15 @@
 }
 
 .event-slide {
-  view-transition-name: event-slide;
+  animation: fade-in 1s ease-in-out forwards;
 
   .loader {
     &.show {
-      animation: show 1s ease-out forwards;
+      animation: show 1s ease-in-out forwards;
     }
   
     &.hidden {
-      animation: hide 1s ease-out forwards;
+      animation: hide 1s ease-in-out forwards;
     }
     
     // loader dot
@@ -94,14 +94,4 @@
       }
     }
   }
-}
-
-::view-transition-group(event-slide) {
-  animation-duration: .5s;
-}
-::view-transition-old(event-slide) {
-  animation-name: fade-out;
-}
-::view-transition-new(event-slide) {
-  animation-name: fade-in;
 }

@@ -1,15 +1,5 @@
 .main {
-  view-transition-name: main;
+  animation: fade-in .5s ease-in-out forwards;
   background-color: $primary-color;
   display: flex;
-}
-
-::view-transition-group(main) {
-  animation-duration: .5s;
-}
-::view-transition-old(main) {
-  animation-name: fade-out;
-}
-::view-transition-new(main) {
-  animation-name: fade-in;
 }
