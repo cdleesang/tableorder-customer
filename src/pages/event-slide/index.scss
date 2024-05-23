@@ -1,13 +1,13 @@
 .event-slide {
-  animation: fade-in 1s ease-in-out forwards;
+  @include fade-in(1s);
 
   .loader {
     &.show {
-      animation: fade-in 1s ease-in-out forwards;
+      @include fade-in(1s);
     }
   
     &.hidden {
-      animation: fade-out 1s ease-in-out forwards;
+      @include fade-out(1s);
     }
     
     // loader dot
