@@ -1,0 +1,3 @@
+@mixin body-height {
+  height: calc(var(--vh, 1vh) * 100 - $header-size);
+}

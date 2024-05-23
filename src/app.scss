@@ -1,3 +1,4 @@
+// router Outlet(본문)
 .body > * {
-  height: calc(100vh - $header-size);
+  @include body-height;
 }

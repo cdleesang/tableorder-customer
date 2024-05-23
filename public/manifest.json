@@ -60,7 +60,6 @@
   }
   ],
   "display": "fullscreen",
-  "start_url": "./?fullscreen=true",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#252422",
+  "background_color": "#252422"
 }
