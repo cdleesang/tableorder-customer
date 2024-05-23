@@ -69,7 +69,7 @@ function useKitchenStatusToast() {
         isFlicker: true,
       });
 
-      playKitchenClosingSound();
+      // playKitchenClosingSound();
 
       setStatus({
         status: 'closing',
