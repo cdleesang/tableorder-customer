@@ -1,5 +1,5 @@
 .modal-backdrop {
-  animation: fade-in .3s ease-out forwards;
+  @include fade-in;
   position: fixed;
   top: 0;
   width: 100vw;
@@ -23,5 +23,9 @@
 .modal {
   padding: 1em; 
   overflow-y: auto;
-  animation: fade-in 1s ease-out forwards;
+  @include fade-in(1s);
+}
+
+.closing {
+  @include fade-out;
 }

@@ -1,5 +1,5 @@
 .main {
-  animation: fade-in .5s ease-in-out forwards;
+  @include fade-in(.5s);
   background-color: $primary-color;
   display: flex;
 }

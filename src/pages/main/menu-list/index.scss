@@ -6,7 +6,7 @@
   background-color: $secondary-color;
   $padding-x: 3%;
   gap: .7em;
-  border-radius: 15px 15px 0 0;
+  border-radius: 12px 12px 0 0;
   
   .infinite-scroll-component__outerdiv {
     flex: 1;
@@ -27,8 +27,8 @@
     align-items: start;
 
     .card {
-      $radius: 10px;
-      box-shadow: 1px 1px 10px rgba($button-color, 0.5);
+      $radius: 6px;
+      box-shadow: 4px 4px 8px rgba(138, 129, 124, 0.3);
       border-radius: $radius;
       display: flex;
       flex-direction: column;
@@ -46,7 +46,7 @@
         flex: 1;
         font-size: .8em;
         border-radius: 0 0 $radius $radius;
-        padding: .4em .6em;
+        padding: .6em;
         color: $font-color;
         display: flex;
         flex-direction: column;

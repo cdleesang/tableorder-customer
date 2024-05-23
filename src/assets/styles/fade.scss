@@ -15,3 +15,11 @@
     opacity: 0;
   }
 }
+
+@mixin fade-in($duration: .3s) {
+  animation: fade-in $duration ease-in-out forwards;
+}
+
+@mixin fade-out($duration: .3s) {
+  animation: fade-out $duration ease-in-out forwards;
+}

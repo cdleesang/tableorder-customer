@@ -8,6 +8,10 @@
   padding-bottom: 2em;
 
   .item {
+    &:nth-child(1) > .item-title {
+      border-radius: 0 12px 0 0;
+    }
+
     &.selected {
       .item-title {
         background-color: rgba($secondary-color, .7);

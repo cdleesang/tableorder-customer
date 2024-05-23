@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './index.scss';
 
 interface ModalProps {
@@ -7,12 +8,21 @@ interface ModalProps {
 }
 
 function Modal({children, close, className}: ModalProps) {
+  const [isClosing, setIsClosing] = useState(false);
+
+  const modalHandler = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      close();
+    }, 300)
+  }
+
   return (
     <>
-      <div className='modal-backdrop' onClick={close} />
-      <div className={`fade-box ${className}`} />
-      <div className={`modal ${className}`}>
-          {children}
+      <div className={`modal-backdrop ${isClosing ? 'closing' : ''}`} onClick={modalHandler} />
+      <div className={`fade-box ${className} ${isClosing ? 'closing' : ''}`} />
+      <div className={`modal ${className} ${isClosing ? 'closing' : ''}`}>
+        {children}
       </div>
     </>
   );

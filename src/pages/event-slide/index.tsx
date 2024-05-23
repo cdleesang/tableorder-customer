@@ -5,14 +5,12 @@ import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { DotLoader } from 'react-spinner-overlay';
 import { EVENT_SLIDE_INTERVAL } from '../../common/constants/constant';
-import { useActive } from '../../components/idle-timer/idle-timer-root';
 import { toast } from '../../components/toast-container/utils/toast';
 import { useConnection } from '../../hooks/use-connection';
 import useSSE from '../../hooks/use-sse';
 import useSwipe from '../../hooks/use-swipe';
-import './index.scss';
 import { ROUTES } from '../../route/routes';
-import { useNavigate } from 'react-router-dom';
+import './index.scss';
 
 function EventSlide() {
   const [slideUrls, setSlideUrls] = useState<string[]>([]);

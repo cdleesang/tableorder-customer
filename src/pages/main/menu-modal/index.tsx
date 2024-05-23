@@ -5,7 +5,7 @@ import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
-import { createSearchParams, unstable_useViewTransitionState, useNavigate, useSearchParams } from 'react-router-dom';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { RingSpinner } from 'react-spinner-overlay';
 import { useSetRecoilState } from 'recoil';
 import { priceComma } from '../../../common/utils/price-comma';
@@ -17,7 +17,7 @@ import './index.scss';
 import MenuOptionGroup from './menu-option-group';
 
 function MenuModal() {
-  const isTransitioning = unstable_useViewTransitionState(ROUTES.MAIN);
+  const [isClosing, setIsClosing] = useState(false);
   const [isOrdering, setIsOrdering] = useState(false);
   const [isCartAdding, setIsCartAdding] = useState(false);
   const [menu, setMenu] = useState<MenuDetail | undefined>(undefined);
@@ -49,6 +49,13 @@ function MenuModal() {
   ) * quantity;
   const setCartItems = useSetRecoilState(cartState);
   const connection = useConnection();
+
+  const modalHandler = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      closeMenuModal();
+    }, 200)
+  }
 
   function validate() {
     if(!menu) {
@@ -123,8 +130,8 @@ function MenuModal() {
 
   return (
     <>
-      <div className="menu-modal-backdrop" onClick={closeMenuModal} />
-      <div className="menu-modal">
+      <div className={`menu-modal-backdrop ${isClosing ? 'closing' : ''}`} onClick={modalHandler} />
+      <div className={`menu-modal ${isClosing ? 'closing' : ''}`}>
         {
           menu && (
             menu.isDisplay

@@ -1,7 +1,7 @@
 .cart-item {
   background-color: $secondary-color;
-  border-radius: 15px;
-  padding: .3em .4em;
+  border-radius: 6px;
+  padding: .5em;
   display: flex;
   gap: .5em;
   flex-direction: column;
@@ -18,7 +18,7 @@
       aspect-ratio: 1/1;
       background-size: cover;
       background-position: center;
-      border-radius: 15px;
+      border-radius: 6px;
     }
 
     .menu-info {

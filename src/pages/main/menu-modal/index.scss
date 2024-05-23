@@ -1,5 +1,5 @@
 .menu-modal-backdrop {
-  animation: fade-in .3s ease-out forwards;
+  @include fade-in;
   position: fixed;
   top: $header-size;
   width: 100vw;
@@ -21,7 +21,7 @@
   flex-direction: column;
 
   .menu-container {
-    animation: fade-in 1s ease-out forwards;
+    @include fade-in(.5s);
     flex: 1;
     display: flex;
     overflow-y: auto;
@@ -178,4 +178,8 @@
     font-weight: 600;
     font-size: large;
   }
+}
+
+.closing {
+  @include fade-out(.2s);
 }
