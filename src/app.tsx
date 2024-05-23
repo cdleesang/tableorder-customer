@@ -24,6 +24,8 @@ function App() {
 
   useEffect(() => {
     SSE.init(connection.host);
+    
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
   }, []);
 
   return (

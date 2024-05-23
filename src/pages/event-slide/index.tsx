@@ -11,6 +11,8 @@ import { useConnection } from '../../hooks/use-connection';
 import useSSE from '../../hooks/use-sse';
 import useSwipe from '../../hooks/use-swipe';
 import './index.scss';
+import { ROUTES } from '../../route/routes';
+import { useNavigate } from 'react-router-dom';
 
 function EventSlide() {
   const [slideUrls, setSlideUrls] = useState<string[]>([]);
@@ -20,7 +22,6 @@ function EventSlide() {
   const connection = useConnection();
   const autoSlideSetTimeoutId = useRef<NodeJS.Timeout | null>(null);
   const { onTouchStart, onTouchMove, onTouchEnd } = useSwipe();
-  const active = useActive();
   
   useSSE({
     type: 'SlideImageChanged',
@@ -68,7 +69,7 @@ function EventSlide() {
   return (
     <div
       className='event-slide'
-      onClick={active}
+      onClick={() => window.location.href = ROUTES.MAIN}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={() => onTouchEnd((isLeftSwipe) => {

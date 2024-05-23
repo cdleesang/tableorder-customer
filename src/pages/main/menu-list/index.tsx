@@ -11,8 +11,6 @@ import { ROUTES } from '../../../route/routes';
 import Breadcrumb from './breadcrumb';
 import './index.scss';
 
-
-
 function MenuList() {
   const [searchParams] = useSearchParams();
   const mainCategoryId = searchParams.get('mainCategoryId') || '';
