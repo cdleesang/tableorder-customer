@@ -171,10 +171,10 @@ function MenuModal() {
                           menuOptionGroup={{
                             selectedOptionIds: new Set(selectedSubOptionIds?.[group.id] || []),
                             setSelectedOptionIds: (optionIds: number[]) => {
-                              setSelectedSubOptionIds({
-                                ...selectedSubOptionIds,
+                              setSelectedSubOptionIds(prev => ({
+                                ...prev,
                                 [group.id]: optionIds,
-                              });
+                              }));
                             },
                             name: group.name,
                             isRequired: group.isRequired,
