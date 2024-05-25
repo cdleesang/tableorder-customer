@@ -149,48 +149,39 @@ function MenuModal() {
                   </div>
                   <div className="menu-body">
                     <MenuOptionGroup
-                      menuOptionGroup={{
-                        selectedOptionIds: new Set(selectedMainOptionId ? [selectedMainOptionId] : []),
-                        setSelectedOptionIds: (optionIds: number[]) => {
-                          setSelectedMainOptionId(optionIds[0]);
-                        },
-                        name: '품목',
-                        isRequired: true,
-                        options: menu.mainOptions.map(option => ({
-                          id: option.id,
-                          name: option.name,
-                          price: option.price,
-                          isSoldOut: false,
-                        })),
+                      selectedOptionIds={new Set(selectedMainOptionId ? [selectedMainOptionId] : [])}
+                      setSelectedOptionIds={(optionIds: number[]) => {
+                        setSelectedMainOptionId(optionIds[0]);
                       }}
+                      name={'품목'}
+                      isRequired={true}
+                      options={menu.mainOptions.map(option => ({
+                        id: option.id,
+                        name: option.name,
+                        price: option.price,
+                        isSoldOut: false,
+                      }))}
                     />
                     {
                       menu.subOptionGroups.map(group => (
                         <MenuOptionGroup
                           key={group.id}
-                          menuOptionGroup={{
-                            selectedOptionIds: new Set(selectedSubOptionIds?.[group.id] || []),
-                            setSelectedOptionIds: (optionIds: number[]) => {
-                              setSelectedSubOptionIds(prev => ({
-                                ...prev,
-                                [group.id]: optionIds,
-                              }));
-                            },
-                            name: group.name,
-                            isRequired: group.isRequired,
-                            ...(group.multiSelectOptions && {
-                              multiSelectOptions: {
-                                min: group.multiSelectOptions.min,
-                                max: group.multiSelectOptions.max,
-                              },
-                            }),
-                            options: group.subOptions.map(option => ({
-                              id: option.id,
-                              name: option.name,
-                              price: option.price,
-                              isSoldOut: option.isSoldOut,
-                            })),
+                          selectedOptionIds={new Set(selectedSubOptionIds?.[group.id] || [])}
+                          setSelectedOptionIds={(optionIds: number[]) => {
+                            setSelectedSubOptionIds(prev => ({
+                              ...prev,
+                              [group.id]: optionIds,
+                            }));
                           }}
+                          name={group.name}
+                          isRequired={group.isRequired}
+                          multiSelectOptions={group.multiSelectOptions ? group.multiSelectOptions : undefined}
+                          options={group.subOptions.map(option => ({
+                            id: option.id,
+                            name: option.name,
+                            price: option.price,
+                            isSoldOut: option.isSoldOut,
+                          }))}
                         />
                       ))
                     }
