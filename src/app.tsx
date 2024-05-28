@@ -10,8 +10,8 @@ import OrderHistoryModal from './components/order-history-modal';
 import TableSettingsModal from './components/table-settings-modal';
 import ToastContainer from './components/toast-container';
 import { useConnection } from './hooks/use-connection';
-import useKitchenStatusToast from './hooks/use-kitchen-status-toast';
-import { SSE } from './sse/sse';
+import useKitchenStatusNotification from './hooks/use-kitchen-status-notification';
+import { SSE } from './hooks/use-sse/sse';
 import { isCallStaffModalOpenState, isOrderHistoryModalOpenState, isSystemSettingsModalOpenState } from './store/state';
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
   const isSystemSettingsModalOpen = useRecoilValue(isSystemSettingsModalOpenState);
   const connection = useConnection();
 
-  useKitchenStatusToast();
+  useKitchenStatusNotification();
 
   useEffect(() => {
     SSE.init(connection.host);

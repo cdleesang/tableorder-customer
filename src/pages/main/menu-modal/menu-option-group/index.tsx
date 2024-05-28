@@ -1,6 +1,6 @@
 import { faAsterisk } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { priceComma } from '../../../../common/utils/price-comma';
+import { priceComma } from '../../../../common/utils/price-comma.util';
 import './index.scss';
 import { useEffect } from 'react';
 

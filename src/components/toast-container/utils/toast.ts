@@ -9,6 +9,7 @@ export function toast(
   options: {
     isInfinite?: boolean,
     isFlicker?: boolean,
+    onClose?: () => void,
   } = {}
 ) {
   return reactToast[type](message, {
@@ -22,6 +23,7 @@ export function toast(
     theme: 'dark',
     transition: Slide,
     toastId: `${uuidV4()} ${options?.isFlicker ? 'flicker' : undefined}`,
+    onClose: options?.onClose,
   });
 }
 

@@ -1,4 +1,4 @@
-import { ValueOf } from '../common/types/value-of.type';
+import { ValueOf } from '../../common/types/value-of.type';
 
 const NOTIFICATION_TYPE = {
   SlideImageChanged: 'SlideImageChanged',

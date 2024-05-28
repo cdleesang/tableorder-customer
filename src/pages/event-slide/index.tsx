@@ -23,7 +23,7 @@ function EventSlide() {
   
   useSSE({
     type: 'SlideImageChanged',
-    onMessage: (data) => {
+    onMessage: data => {
       setSlideUrls(data);
     },
     onReconnect: () => {
