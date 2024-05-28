@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { RingSpinner } from 'react-spinner-overlay';
 import { useSetRecoilState } from 'recoil';
-import { priceComma } from '../../../common/utils/price-comma';
+import { priceComma } from '../../../common/utils/price-comma.util';
 import { toast } from '../../../components/toast-container/utils/toast';
 import { useConnection } from '../../../hooks/use-connection';
 import { ROUTES } from '../../../route/routes';

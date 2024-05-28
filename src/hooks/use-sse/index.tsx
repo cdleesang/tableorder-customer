@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Observer, SSE } from '../sse/sse';
+import { Observer, SSE } from './sse';
 
 function useSSE(observer: Observer) {
   useEffect(() => {

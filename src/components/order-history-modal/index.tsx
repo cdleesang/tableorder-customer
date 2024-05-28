@@ -8,7 +8,7 @@ import { useSetRecoilState } from 'recoil';
 import { toast } from '../toast-container/utils/toast';
 import { useConnection } from '../../hooks/use-connection';
 import { isOrderHistoryModalOpenState } from '../../store/state';
-import { priceComma } from '../../common/utils/price-comma';
+import { priceComma } from '../../common/utils/price-comma.util';
 import './index.scss';
 import Modal from '../modal';
 
