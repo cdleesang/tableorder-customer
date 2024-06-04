@@ -24,7 +24,10 @@ export class KitchenStatusToaster {
       && this.toastHistory.history.isChecked;
 
     if(!isAlreadyChecked) {
-      this.toast(status);
+      // Toast 컨테이너 초기화 후 토스트 발생
+      setTimeout(() => {
+        this.toast(status);
+      }, 0);
     }
   }
 
