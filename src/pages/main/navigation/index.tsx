@@ -21,7 +21,18 @@ function Navigation() {
   
   useEffect(() => {
     api.functional.menu.category.getMenuCategories(connection)
-      .then(setCategories)
+      .then(result => {
+        setCategories(result);
+
+        if(result[0]) {
+          navigator({
+            pathname: ROUTES.MAIN,
+            search: createSearchParams({
+              mainCategoryId: result[0].id.toString(),
+            }).toString(),
+          });
+        }
+      })
       .catch((err) => {
         localStorage.setItem('getMenuCategory', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
 
