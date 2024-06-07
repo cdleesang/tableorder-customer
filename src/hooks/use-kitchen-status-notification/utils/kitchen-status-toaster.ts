@@ -11,6 +11,7 @@ import { KitchenStatusNotificationHistory } from './kitchen-status-notification-
  *     해당 일의 주방 마감 시간 동안은 토스트가 발생하지 않음
  */
 export class KitchenStatusToaster {
+  private static instance: KitchenStatusToaster;
   private toastHistory = new KitchenStatusNotificationHistory<{
     isChecked: boolean;
   }>('kitchen-status-toast-history', {
@@ -18,7 +19,15 @@ export class KitchenStatusToaster {
   });
   private currentToastId?: string | number;
 
-  constructor(status: KitchenStatus) {
+  static getInstance(status: KitchenStatus) {
+    if(!this.instance) {
+      this.instance = new KitchenStatusToaster(status);
+    }
+
+    return this.instance;
+  }
+
+  private constructor(status: KitchenStatus) {
     // 이미 토스트한 경우 토스트x
     const isAlreadyChecked = this.toastHistory.isNow()
       && this.toastHistory.history.isChecked;

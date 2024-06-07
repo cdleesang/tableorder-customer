@@ -12,9 +12,18 @@ import { KitchenStatusNotificationHistory } from './kitchen-status-notification-
  *     해당 일의 주방 마감 시간 동안은 아나운스가 발생하지 않음
  */
 export class KitchenStatusAnnouncer {
+  private static instance: KitchenStatusAnnouncer;
   private announceHistory = new KitchenStatusNotificationHistory('kitchen-status-announce-history', {});
 
-  constructor(status: KitchenStatus) {
+  static getInstance(status: KitchenStatus) {
+    if(!this.instance) {
+      this.instance = new KitchenStatusAnnouncer(status);
+    }
+
+    return this.instance;
+  }
+
+  private constructor(status: KitchenStatus) {
     // 이미 아나운스 한 경우 아나운스x
     const isAlreadyAnnounced = this.announceHistory.isNow();
 
