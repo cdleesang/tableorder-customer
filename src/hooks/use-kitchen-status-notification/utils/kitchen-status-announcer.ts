@@ -1,6 +1,5 @@
-import { sleep } from '../../../common/utils/sleep.util';
 import KitchenClosingAnnounceMP3 from '../../../assets/sounds/kitchen-closing-announce.mp3';
-import plingSoundMP3 from '../../../assets/sounds/pling.mp3';
+import { playNotificationSound } from '../../../common/utils/play-notification-sound.util';
 import { KitchenStatus } from '../types/kitchen-status.type';
 import { Kitchen } from './kitchen';
 import { KitchenStatusNotificationHistory } from './kitchen-status-notification-history';
@@ -12,9 +11,18 @@ import { KitchenStatusNotificationHistory } from './kitchen-status-notification-
  *     해당 일의 주방 마감 시간 동안은 아나운스가 발생하지 않음
  */
 export class KitchenStatusAnnouncer {
+  private static instance: KitchenStatusAnnouncer;
   private announceHistory = new KitchenStatusNotificationHistory('kitchen-status-announce-history', {});
 
-  constructor(status: KitchenStatus) {
+  static getInstance(status: KitchenStatus) {
+    if(!this.instance) {
+      this.instance = new KitchenStatusAnnouncer(status);
+    }
+
+    return this.instance;
+  }
+
+  private constructor(status: KitchenStatus) {
     // 이미 아나운스 한 경우 아나운스x
     const isAlreadyAnnounced = this.announceHistory.isNow();
 
@@ -42,16 +50,8 @@ export class KitchenStatusAnnouncer {
 
   /** 주방 마감 예정 아나운스 */
   private async playClosingAnnounce() {
-    const PLING_VOLUME = 1;
-    const PLING_PLAYBACK_RATE = 1.1;
-    const PLING_DURATION = 1400;
     const KITCHEN_CLOSING_VOLUME = .7;
     const KITCHEN_CLOSING_PLAYBACK_RATE = 0.96;
-
-    const plingSound = new Audio(plingSoundMP3);
-    plingSound.volume = PLING_VOLUME;
-    plingSound.preservesPitch = false;
-    plingSound.playbackRate = PLING_PLAYBACK_RATE;
 
     const kitchenClosingSound = new Audio(KitchenClosingAnnounceMP3);
     kitchenClosingSound.volume = KITCHEN_CLOSING_VOLUME;
@@ -59,8 +59,7 @@ export class KitchenStatusAnnouncer {
     kitchenClosingSound.playbackRate = KITCHEN_CLOSING_PLAYBACK_RATE;
 
     try {
-      await plingSound.play();
-      await sleep(PLING_DURATION);
+      await playNotificationSound();
       await kitchenClosingSound.play();
     } catch(err) {
       console.warn(err);

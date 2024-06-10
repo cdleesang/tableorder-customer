@@ -15,6 +15,7 @@ import { ROUTES } from '../../../route/routes';
 import { cartState } from '../../../store/state';
 import './index.scss';
 import MenuOptionGroup from './menu-option-group';
+import { playNotificationSound } from '../../../common/utils/play-notification-sound.util';
 
 function MenuModal() {
   const [isClosing, setIsClosing] = useState(false);
@@ -332,6 +333,7 @@ function MenuModal() {
                           },
                           [] as OrderImmediatelyBody['menuSubOptions']),
                         }).then(() => {
+                          playNotificationSound().catch(() => {});
                           toast('success', '주문이 완료되었습니다.');
                           setIsOrdering(false);
                           closeMenuModal();

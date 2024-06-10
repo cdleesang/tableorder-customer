@@ -9,6 +9,7 @@ import { useConnection } from '../../../hooks/use-connection';
 import { cartState } from '../../../store/state';
 import './index.scss';
 import CartItem from './item';
+import { playNotificationSound } from '../../../common/utils/play-notification-sound.util';
 
 function Cart() {
   const [cartItems, setCartItems] = useRecoilState(cartState);
@@ -105,6 +106,7 @@ function Cart() {
             })
               .then(() => {
                 toast('success', '주문이 완료되었습니다');
+                playNotificationSound().catch(() => {});
                 setCartItems([]);
                 setIsOrdering(false);
               })
