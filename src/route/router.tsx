@@ -1,23 +1,20 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ROUTES } from './routes';
-import EventSlide from '../pages/event-slide';
-import Main from '../pages/main';
-import App from '../app';
 
 function Router() {
   const router = createBrowserRouter([
     {
-      element: <App />,
+      lazy: async () => ({Component: (await import('../app')).default}),
       children: [
         {
           path: ROUTES.EVENT_SLIDE,
-          element: <EventSlide />
+          lazy: async () => ({Component: (await import('../pages/event-slide')).default}),
         },
         {
           path: ROUTES.MAIN,
-          element: <Main />
-        }
-      ]
+          lazy: async () => ({Component: (await import('../pages/main')).default}),
+        },
+      ],
     },
   ]);
 

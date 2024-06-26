@@ -4,12 +4,11 @@ const NOTIFICATION_TYPE = {
   SlideImageChanged: 'SlideImageChanged',
 } as const;
 
-
 export type Observer = {
   type: ValueOf<typeof NOTIFICATION_TYPE>,
   onMessage: (data: any) => void,
   onReconnect: () => void,
-}
+};
 
 export class SSE {
   private static RETRY_INTERVAL = 5000;
@@ -34,7 +33,7 @@ export class SSE {
     eventSource.onerror = () => {
       eventSource.close();
       this.retryQueue.push(() => this.connectNotificationSSE(host));
-    }
+    };
 
     eventSource.onopen = () => {
       this.observers.forEach(o => {
@@ -42,7 +41,7 @@ export class SSE {
           o.onReconnect();
         }
       });
-    }
+    };
 
     Object.values(NOTIFICATION_TYPE).forEach(type => {
       this.addEventListener(eventSource, type);

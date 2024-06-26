@@ -1,11 +1,11 @@
 import api from '@cdleesang/tableorder-api-sdk';
 import { faCartShopping, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RingSpinner } from 'react-spinner-overlay';
 import { useRecoilState } from 'recoil';
 import { toast } from '../../../components/toast-container/utils/toast';
-import { useConnection } from '../../../hooks/use-connection';
+import { useTableConnection } from '../../../hooks/use-table-connection';
 import { cartState } from '../../../store/state';
 import './index.scss';
 import CartItem from './item';
@@ -13,9 +13,11 @@ import { playNotificationSound } from '../../../common/utils/play-notification-s
 
 function Cart() {
   const [cartItems, setCartItems] = useRecoilState(cartState);
-  const cartTotalPrice = cartItems.reduce((acc, item) => acc + item.menuTotalPrice, 0);
+  const cartTotalPrice = useMemo(() => {
+    return cartItems.reduce((acc, item) => acc + item.menuTotalPrice, 0);
+  }, [cartItems]);
   const [isOrdering, setIsOrdering] = useState(false);
-  const connection = useConnection();
+  const connection = useTableConnection();
 
   useEffect(() => {
     api.functional.cart.getAllCartItems(connection)
@@ -48,7 +50,7 @@ function Cart() {
               delete={
                 () => api.functional.cart.deleteItemById(connection, item.id)
                   .then(() => {
-                    setCartItems(prev => prev.filter(cartItem => cartItem.id !== item.id))
+                    setCartItems(prev => prev.filter(cartItem => cartItem.id !== item.id));
                   })
                   .catch(() => {
                     toast('error', '메뉴를 삭제하는 중 오류가 발생했습니다');

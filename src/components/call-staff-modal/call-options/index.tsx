@@ -1,5 +1,4 @@
 import { CallOption } from '@cdleesang/tableorder-api-sdk/lib/structures/CallOption';
-import './index.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,19 +17,20 @@ function CallOptions(props: {
   isCountable?: boolean;
 }) {
   return (
-    <div className={`options${props.isCountable ? ' countable' : ''}`}>
+    <div className={`w-full flex flex-wrap font-semibold gap-5`}>
       {
-        props.options.map(option => (
+        props.options.map((option, idx) => (
           <div
-            className={`option${props.currentOptions[option.id].isSelected ? ' selected' : ''}`}
+            className={`flex flex-col gap-5 text-center rounded-2xl ${props.isCountable ? 'p-3.5' : 'px-5 py-4'} ${props.currentOptions[option.id].isSelected ? 'bg-button' : 'bg-secondary'}`}
+            key={idx}
             onClick={() => {
               props.setCurrentOptions(prev => ({
                 ...prev,
                 [option.id]: {
                   ...prev[option.id],
                   isSelected: !prev[option.id].isSelected,
-                  count: prev[option.id].isSelected ? 1 : prev[option.id].count
-                }
+                  count: prev[option.id].isSelected ? 1 : prev[option.id].count,
+                },
               }));
             }}
           >
@@ -38,30 +38,26 @@ function CallOptions(props: {
             {
               props.isCountable && (
                 <div
-                  className="counter-container"
+                  className="bg-primary bg-opacity-40 rounded-full flex justify-around items-center gap-4 px-2.5 py-2"
                   onClick={e => e.stopPropagation()}
                 >
                   <div
-                    className="minus"
-                    onClick={() => props.setCurrentOptions(prev => ({
-                      ...prev,
+                    onClick={() => props.setCurrentOptions(prev => ({...prev,
                       [option.id]: {
                         ...prev[option.id],
-                        count: Math.max(1, prev[option.id].count - 1)
+                        count: Math.max(1, prev[option.id].count - 1),
                       }}
-                    ))}  
+                    ))}
                   >
                     <FontAwesomeIcon icon={faMinus} />
                   </div>
-                  <span className="counter">{props.currentOptions[option.id].count}</span>
+                  <span className="font-mono">{props.currentOptions[option.id].count}</span>
                   <div
-                    className="plus"
-                    onClick={() => props.setCurrentOptions(prev => ({
-                      ...prev,
+                    onClick={() => props.setCurrentOptions(prev => ({...prev,
                       [option.id]: {
                         ...prev[option.id],
                         isSelected: true,
-                        count: prev[option.id].count + 1
+                        count: prev[option.id].count + 1,
                       }}
                     ))}
                   >
@@ -73,7 +69,7 @@ function CallOptions(props: {
           </div>
         ))
       }
-      </div>
+    </div>
   );
 }
 

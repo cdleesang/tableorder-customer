@@ -14,8 +14,8 @@ function Modal({children, close, className}: ModalProps) {
     setIsClosing(true);
     setTimeout(() => {
       close();
-    }, 300)
-  }
+    }, 300);
+  };
 
   return (
     <>

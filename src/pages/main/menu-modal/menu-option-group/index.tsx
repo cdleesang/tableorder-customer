@@ -39,7 +39,7 @@ function initSelectedOptionIds(menuOptionGroup: MenuOptionGroupProps) {
 
     if(!isMinInfinite) {
       const selectedOptionIds = new Set(menuOptionGroup.selectedOptionIds);
-      const min = menuOptionGroup.multiSelectOptions.min;
+      const {min} = menuOptionGroup.multiSelectOptions;
 
       for(let i = 0; i < min; i++) {
         const option = menuOptionGroup.options[i];
@@ -71,8 +71,8 @@ function MenuOptionGroup(menuOptionGroup: MenuOptionGroupProps) {
     <div className="menu-option-group">
       <span className="group-title">
         {
-          menuOptionGroup.isRequired &&
-            <span className="required-icon"><FontAwesomeIcon icon={faAsterisk} /></span>
+          menuOptionGroup.isRequired
+            && <span className="required-icon"><FontAwesomeIcon icon={faAsterisk} /></span>
         }
         <span className="group-name">{menuOptionGroup.name}</span>
         <span className="group-description">

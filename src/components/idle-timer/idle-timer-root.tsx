@@ -5,7 +5,7 @@ import { ROUTES } from '../../route/routes';
 const IdleTimerRootContext = createContext(() => {});
 export const useActive = () => useContext(IdleTimerRootContext);
 
-function IdleTimerRoot({children}: {children: React.ReactNode}) {
+function IdleTimerRoot({ children }: { children: React.ReactNode; }) {
   const setTimeoutId = useRef<NodeJS.Timeout | null>(null);
 
   function handleActive() {
@@ -14,7 +14,7 @@ function IdleTimerRoot({children}: {children: React.ReactNode}) {
     }
 
     setTimeoutId.current = setTimeout(
-      () => window.location.href = ROUTES.EVENT_SLIDE,
+      () => { window.location.href = ROUTES.EVENT_SLIDE },
       IDLE_TIME,
     );
   }

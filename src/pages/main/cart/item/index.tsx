@@ -34,7 +34,7 @@ function CartItem(props: CartItemProps) {
     to: {translateY: '0%'},
     config: {
       friction: 13,
-    }
+    },
   });
 
   return (
@@ -60,8 +60,8 @@ function CartItem(props: CartItemProps) {
                 optionId: props.menuMainOption.id,
                 optionName: props.menuMainOption.name,
                 optionPrice: props.menuMainOption.price,
-              }, 
-              ...props.menuSubOptions
+              },
+              ...props.menuSubOptions,
             ].map(option => (
               <div className="option" key={`${option.groupId}_${option.optionId}`}>
                 <span className="option-name">{option.optionName}</span>
@@ -81,7 +81,7 @@ function CartItem(props: CartItemProps) {
         </div>
       </div>
     </animated.div>
-  )
+  );
 }
 
 export default CartItem;

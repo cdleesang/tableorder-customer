@@ -8,13 +8,12 @@ export class Kitchen {
   static get status() {
     if(this.isOpen()) {
       return KitchenStatus.Open;
-    } else if(this.isClosing()) {
+    } if(this.isClosing()) {
       return KitchenStatus.Closing;
-    } else if(this.isClosed()) {
+    } if(this.isClosed()) {
       return KitchenStatus.Closed;
-    } else {
-      throw new Error('Invalid status');
     }
+    throw new Error('Invalid status');
   }
 
   /** 주방 오픈 시간 */
@@ -95,25 +94,25 @@ export class Kitchen {
   private static isBeforeOpenTime(now: moment.Moment) {
     if(now.hour() < this.OPEN_TIME.hour) {
       return true;
-    } else if(now.hour() > this.OPEN_TIME.hour) {
+    } if(now.hour() > this.OPEN_TIME.hour) {
       return false;
     }
     // hour가 같은 경우
     if(now.minute() < this.OPEN_TIME.minute) {
       return true;
-    } else if(now.minute() > this.OPEN_TIME.minute) {
+    } if(now.minute() > this.OPEN_TIME.minute) {
       return false;
     }
     // minute가 같은 경우
     if(now.second() < this.OPEN_TIME.second) {
       return true;
-    } else if(now.second() > this.OPEN_TIME.second) {
+    } if(now.second() > this.OPEN_TIME.second) {
       return false;
     }
     // second가 같은 경우
     if(now.millisecond() < this.OPEN_TIME.millisecond) {
       return true;
-    } else if(now.millisecond() > this.OPEN_TIME.millisecond) {
+    } if(now.millisecond() > this.OPEN_TIME.millisecond) {
       return false;
     }
     // millisecond가 같은 경우

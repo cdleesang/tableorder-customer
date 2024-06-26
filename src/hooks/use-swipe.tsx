@@ -7,11 +7,11 @@ function useSwipe() {
   const onTouchStart = (event: React.TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(event.touches[0].clientX);
-  }
+  };
 
   const onTouchMove = (event: React.TouchEvent) => {
     setTouchEnd(event.touches[0].clientX);
-  }
+  };
 
   const onTouchEnd = (
     callback: (isLeftSwipe: boolean, isRightSwipe: boolean) => void,
@@ -25,13 +25,13 @@ function useSwipe() {
     if(isLeftSwipe || isRightSwipe) {
       callback(isLeftSwipe, isRightSwipe);
     }
-  }
+  };
 
   return {
     onTouchStart,
     onTouchMove,
     onTouchEnd,
-  }
+  };
 }
 
 export default useSwipe;

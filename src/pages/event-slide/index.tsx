@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { DotLoader } from 'react-spinner-overlay';
 import { EVENT_SLIDE_INTERVAL } from '../../common/constants/constant';
 import { toast } from '../../components/toast-container/utils/toast';
-import { useConnection } from '../../hooks/use-connection';
+import { useTableConnection } from '../../hooks/use-table-connection';
 import useSSE from '../../hooks/use-sse';
 import useSwipe from '../../hooks/use-swipe';
 import { ROUTES } from '../../route/routes';
@@ -17,7 +17,7 @@ function EventSlide() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const carouselRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
-  const connection = useConnection();
+  const connection = useTableConnection();
   const autoSlideSetTimeoutId = useRef<NodeJS.Timeout | null>(null);
   const { onTouchStart, onTouchMove, onTouchEnd } = useSwipe();
   
@@ -38,8 +38,8 @@ function EventSlide() {
         
         setIsLoading(false);
       })
-      .catch((err) => {
-        localStorage.setItem('getAllSlideImage', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+      .catch(err => {
+        localStorage.setItem('getAllSlideImage', `${moment().format('YYYY-MM-DD HH:mm:ss')} ${JSON.stringify(err)}`);
   
         setIsLoading(false);
   
@@ -70,8 +70,8 @@ function EventSlide() {
       onClick={() => window.location.href = ROUTES.MAIN}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
-      onTouchEnd={() => onTouchEnd((isLeftSwipe) => {
-        setCurrentIndex(prev => isLeftSwipe ? (prev + 1) % slideUrls.length : (prev - 1 + slideUrls.length) % slideUrls.length);
+      onTouchEnd={() => onTouchEnd(isLeftSwipe => {
+        setCurrentIndex(prev => (isLeftSwipe ? (prev + 1) % slideUrls.length : (prev - 1 + slideUrls.length) % slideUrls.length));
       }, 50)}
     >
       <div className="slide-container">
@@ -84,7 +84,7 @@ function EventSlide() {
         </div>
         <div
           className="controller"
-          onClick={(event) => {
+          onClick={event => {
             event.stopPropagation();
           }}
         >

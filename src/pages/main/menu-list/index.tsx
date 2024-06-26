@@ -6,7 +6,7 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 import { RingSpinner } from 'react-spinner-overlay';
 import { priceComma } from '../../../common/utils/price-comma.util';
 import { toast } from '../../../components/toast-container/utils/toast';
-import { useConnection } from '../../../hooks/use-connection';
+import { useTableConnection } from '../../../hooks/use-table-connection';
 import { ROUTES } from '../../../route/routes';
 import Breadcrumb from './breadcrumb';
 import './index.scss';
@@ -19,7 +19,7 @@ function MenuList() {
   const [isLoading, setIsLoading] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
   const navigator = useNavigate();
-  const connection = useConnection();
+  const connection = useTableConnection();
 
   const page = useRef<number>(1);
   const hasMore = useRef<boolean>(true);
@@ -41,8 +41,8 @@ function MenuList() {
       if(err instanceof api.HttpError && err.status === 404) {
         hasMore.current = false;
       } else {
-        localStorage.setItem('getPaginatedMenus', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
-        toast('error', '메뉴를 불러오는 중 오류가 발생했습니다.')
+        localStorage.setItem('getPaginatedMenus', `${moment().format('YYYY-MM-DD HH:mm:ss')} ${JSON.stringify(err)}`);
+        toast('error', '메뉴를 불러오는 중 오류가 발생했습니다.');
       }
     }
 
@@ -51,7 +51,7 @@ function MenuList() {
   }
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver(entries => {
       if(entries[0].isIntersecting) {
         fetchMenus();
       }
@@ -72,7 +72,7 @@ function MenuList() {
       if(observerTarget) {
         observer.unobserve(observerTarget);
       }
-    }
+    };
   }, [mainCategoryId, subCategoryId]);
 
   return (
@@ -95,10 +95,15 @@ function MenuList() {
                 });
               }}
             >
-              <div
-                className={`card-image`}
-                style={{backgroundImage: `url(${menu.imageUrl})`}}
-              />
+              <div className="image-container">
+                <div className="sold-out-overlay">Sold Out</div>
+                <img
+                  className={'card-image'}
+                  src={menu.imageUrl}
+                  alt={menu.name}
+                  loading='lazy'
+                />
+              </div>
               <div className="card-body">
                 <div className="card-title" dangerouslySetInnerHTML={{__html: menu.name}} />
                 <div className="card-price">{priceComma(menu.price||0)}원</div>
