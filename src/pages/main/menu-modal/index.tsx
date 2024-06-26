@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useEffect, useMemo, useState } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { toast } from '../../../components/toast-container/utils/toast';
-import { useConnection } from '../../../hooks/use-connection';
+import { useTableConnection } from '../../../hooks/use-table-connection';
 import { ROUTES } from '../../../route/routes';
 import './index.scss';
 import MenuFooter from './menu-footer';
@@ -36,14 +36,14 @@ function MenuModal() {
     
     return (mainOptionPrice + subOptionPrice) * quantity;
   }, [menu, selectedMainOptionId, selectedSubOptionIds, quantity]);
-  const connection = useConnection();
+  const connection = useTableConnection();
 
   const modalHandler = () => {
     setIsClosing(true);
     setTimeout(() => {
       closeModal();
-    }, 200)
-  }
+    }, 200);
+  };
 
   function closeModal() {
     navigator({
@@ -65,11 +65,10 @@ function MenuModal() {
         }>((acc, group) => {
           acc[group.id] = [];
           return acc;
-        }, {})
-        );
+        }, {}));
       })
-      .catch((err) => {
-        localStorage.setItem('getMenuDetail', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+      .catch(err => {
+        localStorage.setItem('getMenuDetail', `${moment().format('YYYY-MM-DD HH:mm:ss')} ${JSON.stringify(err)}`);
 
         toast('error', '메뉴를 불러오는데 실패했습니다.');
       });
@@ -129,7 +128,7 @@ function MenuModal() {
                   menu={menu}
                   quantity={quantity}
                   increaseQuantity={() => setQuantity(prev => prev + 1)}
-                  decreaseQuantity={() => setQuantity(prev => prev > 1 ? prev - 1 : 1)}
+                  decreaseQuantity={() => setQuantity(prev => (prev > 1 ? prev - 1 : 1))}
                   totalPrice={totalPrice}
                   selectedMainOptionId={selectedMainOptionId}
                   selectedSubOptionIds={selectedSubOptionIds || {}}

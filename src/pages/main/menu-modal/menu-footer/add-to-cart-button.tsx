@@ -1,11 +1,11 @@
 import api from '@cdleesang/tableorder-api-sdk';
 import { useMemo, useState } from 'react';
 import { RingSpinner } from 'react-spinner-overlay';
-import { useConnection } from '../../../../hooks/use-connection';
-import { toast } from '../../../../components/toast-container/utils/toast';
 import { useSetRecoilState } from 'recoil';
-import { cartState } from '../../../../store/state';
 import { MenuDetail } from '@cdleesang/tableorder-api-sdk/lib/structures/MenuDetail';
+import { useTableConnection } from '../../../../hooks/use-table-connection';
+import { toast } from '../../../../components/toast-container/utils/toast';
+import { cartState } from '../../../../store/state';
 import { SelectedSubOptions } from './types/selected-sub-options.type';
 
 interface AddToCartButtonProps {
@@ -22,9 +22,9 @@ export default function AddToCartButton(props: AddToCartButtonProps) {
   const [isCartAdding, setIsCartAdding] = useState(false);
   const setCartItems = useSetRecoilState(cartState);
   const selectedMainOption = useMemo(() => {
-    return props.menu.mainOptions.find(option => option.id === props.selectedMainOptionId)!
+    return props.menu.mainOptions.find(option => option.id === props.selectedMainOptionId)!;
   }, [props.menu, props.selectedMainOptionId]);
-  const connection = useConnection();
+  const connection = useTableConnection();
 
   const addCartItem = async (menuId: number, quantity: number, totalPrice: number, mainOptionId: number, subOptions: SelectedSubOptions) => {
     const cartItemId = await api.functional.cart.addItem(connection, {
@@ -51,7 +51,7 @@ export default function AddToCartButton(props: AddToCartButtonProps) {
       },
       ...prev,
     ]);
-  }
+  };
 
   const onAddToCart = async () => {
     if(props.selectedMainOptionId === undefined || props.selectedSubOptions === undefined) {

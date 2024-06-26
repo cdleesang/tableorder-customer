@@ -4,7 +4,6 @@ import { ROUTES } from '../../../../route/routes';
 import { menuCategoriesState } from '../../../../store/state';
 import './index.scss';
 
-
 function Breadcrumb() {
   const [searchParams] = useSearchParams();
   const navigator = useNavigate();
@@ -14,7 +13,7 @@ function Breadcrumb() {
 
   return searchParams.get('mainCategoryId')
     ? (
-      <div className={`breadcrumb`}>
+      <div className={'breadcrumb'}>
         <div
           className="badge main-category"
           onClick={() => {
@@ -23,7 +22,7 @@ function Breadcrumb() {
               search: createSearchParams({
                 mainCategoryId: searchParams.get('mainCategoryId') || '',
               }).toString(),
-            })
+            });
           }}
         >
           {currentMainCategory?.name}

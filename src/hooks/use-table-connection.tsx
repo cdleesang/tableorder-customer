@@ -2,7 +2,7 @@ import { IConnection } from '@cdleesang/tableorder-api-sdk';
 import { API_URL } from '../common/constants/constant';
 import { tableNoKey } from '../store/state';
 
-export function useConnection(): IConnection<{
+export function useTableConnection(): IConnection<{
   tid: string;
 }> {
   const tableNo = localStorage.getItem(tableNoKey);
@@ -10,7 +10,7 @@ export function useConnection(): IConnection<{
   return {
     host: API_URL,
     headers: {
-      'tid': tableNo ? tableNo.toString() : '',
+      tid: tableNo ? tableNo.toString() : '',
     },
   };
 }

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { SelectedSubOptions } from './types/selected-sub-options.type';
-import { useConnection } from '../../../../hooks/use-connection';
 import api from '@cdleesang/tableorder-api-sdk';
 import { MenuDetail } from '@cdleesang/tableorder-api-sdk/lib/structures/MenuDetail';
+import { RingSpinner } from 'react-spinner-overlay';
+import { SelectedSubOptions } from './types/selected-sub-options.type';
+import { useTableConnection } from '../../../../hooks/use-table-connection';
 import { playNotificationSound } from '../../../../common/utils/play-notification-sound.util';
 import { toast } from '../../../../components/toast-container/utils/toast';
-import { RingSpinner } from 'react-spinner-overlay';
 
 interface OrderButtonProps {
   menu: MenuDetail;
@@ -19,7 +19,7 @@ interface OrderButtonProps {
 
 export default function OrderButton(props: OrderButtonProps) {
   const [isOrdering, setIsOrdering] = useState(false);
-  const connection = useConnection();
+  const connection = useTableConnection();
   
   return <button
     className="order-button"
@@ -28,7 +28,7 @@ export default function OrderButton(props: OrderButtonProps) {
     onClick={async () => {
       if(props.selectedMainOptionId === undefined || props.selectedSubOptions === undefined) {
         return;
-      } 
+      }
       
       setIsOrdering(true);
 
@@ -57,5 +57,5 @@ export default function OrderButton(props: OrderButtonProps) {
     }}
   >
     {isOrdering ? <div className="loader"><RingSpinner size={25} /></div> : '주문하기'}
-  </button>
+  </button>;
 }

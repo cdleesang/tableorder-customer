@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { toast } from '../../../components/toast-container/utils/toast';
-import { useConnection } from '../../../hooks/use-connection';
+import { useTableConnection } from '../../../hooks/use-table-connection';
 import { ROUTES } from '../../../route/routes';
 import { menuCategoriesState, openedCategoriesState } from '../../../store/state';
 import './index.scss';
@@ -17,7 +17,7 @@ function Navigation() {
   const navigator = useNavigate();
   const [categories, setCategories] = useRecoilState<MenuCategory[]>(menuCategoriesState);
   const [openedCategories, setOpenedCategories] = useRecoilState(openedCategoriesState);
-  const connection = useConnection();
+  const connection = useTableConnection();
   
   useEffect(() => {
     api.functional.menu.category.getMenuCategories(connection)
@@ -33,8 +33,8 @@ function Navigation() {
           });
         }
       })
-      .catch((err) => {
-        localStorage.setItem('getMenuCategory', moment().format('YYYY-MM-DD HH:mm:ss') + ' ' + JSON.stringify(err));
+      .catch(err => {
+        localStorage.setItem('getMenuCategory', `${moment().format('YYYY-MM-DD HH:mm:ss')} ${JSON.stringify(err)}`);
 
         toast('error', '카테고리를 불러오는 중 오류가 발생했습니다');
       });
@@ -51,9 +51,7 @@ function Navigation() {
               <div className="item-title">
                 <span
                   onClick={() => {
-                    setOpenedCategories(prev => ({
-                      ...prev, [mainCategory.id]: !prev[mainCategory.id]})
-                    );
+                    setOpenedCategories(prev => ({...prev, [mainCategory.id]: !prev[mainCategory.id]}));
                     navigator({
                       pathname: ROUTES.MAIN,
                       search: createSearchParams({
@@ -70,7 +68,7 @@ function Navigation() {
                       className="clickable"
                       onClick={() => {
                         setOpenedCategories(prev => ({
-                          ...prev, [mainCategory.id]: !prev[mainCategory.id]
+                          ...prev, [mainCategory.id]: !prev[mainCategory.id],
                         }));
                       }}
                     >

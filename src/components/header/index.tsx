@@ -23,7 +23,7 @@ function Header() {
     setTimeoutId.current = setTimeout(() => {
       setClickCount(0);
     }, 400);
-  }
+  };
 
   return (
     <div className='header'>

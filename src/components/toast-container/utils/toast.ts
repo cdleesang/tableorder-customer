@@ -10,7 +10,7 @@ export function toast(
     isInfinite?: boolean,
     isFlicker?: boolean,
     onClose?: () => void,
-  } = {}
+  } = {},
 ) {
   return reactToast[type](message, {
     position: 'top-right',
