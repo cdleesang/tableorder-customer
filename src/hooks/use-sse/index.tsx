@@ -7,7 +7,7 @@ function useSSE(observer: Observer) {
     
     return () => {
       SSE.unsubscribe(observer);
-    }
+    };
   }, []);
 }
 

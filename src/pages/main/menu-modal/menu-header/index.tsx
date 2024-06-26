@@ -9,7 +9,7 @@ function MenuHeader(props: MenuHeaderProps) {
   return <div className="menu-header">
     <div
       className={`menu-img ${props.isSoldOut ? 'sold-out' : ''}`}
-      style={{backgroundImage: `url(${props.imageUrl})`,}}
+      style={{backgroundImage: `url(${props.imageUrl})`}}
     />
     <div className="menu-info">
       <div className="menu-name" dangerouslySetInnerHTML={{__html: props.name}} />

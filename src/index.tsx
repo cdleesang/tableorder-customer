@@ -6,14 +6,14 @@ import Router from './route/router';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 
 root.render(
   // <React.StrictMode>
-    <RecoilRoot>
-      <Router />
-    </RecoilRoot>
+  <RecoilRoot>
+    <Router />
+  </RecoilRoot>,
   // </React.StrictMode>
 );
 

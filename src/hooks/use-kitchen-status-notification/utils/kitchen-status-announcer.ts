@@ -50,7 +50,7 @@ export class KitchenStatusAnnouncer {
 
   /** 주방 마감 예정 아나운스 */
   private async playClosingAnnounce() {
-    const KITCHEN_CLOSING_VOLUME = .7;
+    const KITCHEN_CLOSING_VOLUME = 0.7;
     const KITCHEN_CLOSING_PLAYBACK_RATE = 0.96;
 
     const kitchenClosingSound = new Audio(KitchenClosingAnnounceMP3);

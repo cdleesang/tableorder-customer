@@ -33,7 +33,7 @@ export function useValidator(menu?: MenuDetail, selectedMainOptionId?: number, s
         if(group.multiSelectOptions.min !== -1 && selectedSubOptionIds[group.id].length < group.multiSelectOptions.min) {
           // 최소 선택개수 미만으로 선택한 경우
           return false;
-        } else if(group.multiSelectOptions.max !== -1 && selectedSubOptionIds[group.id].length > group.multiSelectOptions.max) {
+        } if(group.multiSelectOptions.max !== -1 && selectedSubOptionIds[group.id].length > group.multiSelectOptions.max) {
           // 최대 선택개수 초과로 선택한 경우
           return false;
         }

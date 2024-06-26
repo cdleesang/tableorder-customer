@@ -12,7 +12,7 @@ function useKitchenStatusNotification() {
 
   useEffect(() => {
     intervalId.current = setInterval(() => {
-      const status = Kitchen.status;
+      const {status} = Kitchen;
 
       if(currentKitchenStatus.current === status) return;
 
