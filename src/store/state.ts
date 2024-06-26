@@ -1,17 +1,27 @@
 import { MenuCategory } from '@cdleesang/tableorder-api-sdk/lib/structures/MenuCategory';
 import { atom } from 'recoil';
+import { LocalStorage } from './local-storage';
 
-export const tableNoKey = 'tableNo';
+export const adminAccessTokenState = atom<string | undefined>({
+  key: 'adminAccessToken',
+  default: undefined,
+});
+
+export const isAdminNavOpenState = atom<boolean>({
+  key: 'isAdminNavOpen',
+  default: false,
+});
+
 export const tableNoState = atom<number | undefined>({
-  key: tableNoKey,
-  default: parseInt(localStorage.getItem(tableNoKey) || '', 10) || undefined,
+  key: 'tableNo',
+  default: parseInt(LocalStorage.tableNo || '', 10) || undefined,
   effects: [
     ({onSet}) => {
       onSet(newTableNo => {
-        localStorage.setItem(tableNoKey, newTableNo ? newTableNo.toString() : '');
-      })
-    }
-  ]
+        LocalStorage.tableNo = newTableNo ? newTableNo.toString() : '';
+      });
+    },
+  ],
 });
 
 export const menuCategoriesState = atom<MenuCategory[]>({
