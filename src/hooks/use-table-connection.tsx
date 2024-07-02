@@ -1,11 +1,11 @@
 import { IConnection } from '@cdleesang/tableorder-api-sdk';
 import { API_URL } from '../common/constants/constant';
-import { tableNoKey } from '../store/state';
+import { LocalStorage } from '../store/local-storage';
 
 export function useTableConnection(): IConnection<{
   tid: string;
 }> {
-  const tableNo = localStorage.getItem(tableNoKey);
+  const {tableNo} = LocalStorage;
 
   return {
     host: API_URL,

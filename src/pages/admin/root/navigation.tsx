@@ -1,20 +1,22 @@
 import { faArrowRightFromBracket, faReceipt, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { MdTableRestaurant } from 'react-icons/md';
-import { adminAccessTokenState, isAdminNavOpenState } from '../../../store/state';
+import { adminAccessTokenState, isAdminNavOpenState, isMobileState } from '../../../store/state';
 import { ROUTES } from '../../../route/routes';
 import { useState } from 'react';
 import Modal from '../../../components/modal';
 import api from '@cdleesang/tableorder-api-sdk';
 import { useAdminConnection } from '../../../hooks/use-admin-connection';
 import { LocalStorage } from '../../../store/local-storage';
+import { ADMIN_PERMISSIONS, useAdminPayload } from '../../../hooks/use-admin-payload';
 
 const NAVIGATION_ITEMS: Array<{
   title: string;
   href: string;
   icon: JSX.Element;
+  requirePermissions?: (typeof ADMIN_PERMISSIONS[keyof typeof ADMIN_PERMISSIONS])[];
 }> = [
   {
     title: '내 정보 관리',
@@ -35,24 +37,32 @@ const NAVIGATION_ITEMS: Array<{
     title: '현재 주문내역 보기',
     href: ROUTES.ADMIN_ORDERS,
     icon: <FontAwesomeIcon icon={faReceipt} />,
+    requirePermissions: [ADMIN_PERMISSIONS.VIEW_ORDER],
   },
 ];
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useRecoilState(isAdminNavOpenState);
   const setAccessToken = useSetRecoilState(adminAccessTokenState);
+  const isMobile = useRecoilValue(isMobileState);
   const [isSignOutModalOpen, setIsSignOutModalOpen] = useState(false);
+  const payload = useAdminPayload();
   const location = useLocation();
   const navigate = useNavigate();
   const connection = useAdminConnection();
 
   return (
     <>
-      <div className={`fixed overflow-hidden ${isOpen ? 'w-56' : 'w-16'} top-0 flex h-screen max-w-full flex-col justify-between bg-secondary text-white py-3 pt-12 transition-[width]`}>
+      <div className={`fixed overflow-hidden ${isOpen ? 'w-56' : isMobile ? 'w-0' : 'w-16'} top-0 flex h-[calc(var(--vh,1vh)*100)] max-w-full flex-col justify-between bg-secondary text-white py-3 pt-12 transition-[width]`}>
         <div className="my-4 flex flex-1 flex-col overflow-y-auto">
           {
-            NAVIGATION_ITEMS.map(({ title, href, icon }, idx) => (
-              <Link
+            NAVIGATION_ITEMS.map(({ title, href, icon, requirePermissions }, idx) => {
+              if(requirePermissions) {
+                if(!payload) return null;
+                if(!requirePermissions.every(({key: permission}) => payload.permissions.includes(permission))) return null;
+              }
+              
+              return <Link
                 key={idx}
                 to={href}
                 onClick={() => setIsOpen(false)}
@@ -63,7 +73,7 @@ export default function Navigation() {
                 </span>
                 <span className={'ml-2 flex-1'}>{title}</span>
               </Link>
-            ))
+            })
           }
         </div>
         <div

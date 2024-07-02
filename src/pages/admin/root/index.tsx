@@ -1,38 +1,67 @@
-import { useRecoilState } from 'recoil';
 import api from '@cdleesang/tableorder-api-sdk';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { adminAccessTokenState, isAdminNavOpenState } from '../../../store/state';
-import { LocalStorage } from '../../../store/local-storage';
-import { ROUTES } from '../../../route/routes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useRef } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { useAdminConnection } from '../../../hooks/use-admin-connection';
+import { ROUTES } from '../../../route/routes';
+import { LocalStorage } from '../../../store/local-storage';
+import { adminAccessTokenState, isAdminNavOpenState, isMobileState } from '../../../store/state';
 import Navigation from './navigation';
 
 export default function Admin() {
   const [isNavOpen, setIsNavOpen] = useRecoilState(isAdminNavOpenState);
   const [accessToken, setAccessToken] = useRecoilState(adminAccessTokenState);
+  const renewTokenIntervalId = useRef<NodeJS.Timeout | null>(null);
   const connection = useAdminConnection();
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useRecoilState(isMobileState);
+
+  const renewToken = async () => {
+    const refreshToken = LocalStorage.adminRefreshToken;
+
+    if (refreshToken === null) {
+      navigate(ROUTES.ADMIN_SIGN_IN);
+    }
+    
+    try {
+      const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await api.functional.api.auth.admin.renew_token.adminRenewToken(connection, {
+        refreshToken: refreshToken!,
+      });
+      
+      setAccessToken(newAccessToken);
+      LocalStorage.adminRefreshToken = newRefreshToken;
+    } catch {
+      navigate(ROUTES.ADMIN_SIGN_IN);
+    }
+  }
 
   useEffect(() => {
-    if (!accessToken) {
-      const refreshToken = LocalStorage.adminRefreshToken;
+    if(!accessToken) {
+      renewToken();
+    }
 
-      if (refreshToken === null) {
-        navigate(ROUTES.ADMIN_SIGN_IN);
+    renewTokenIntervalId.current = setInterval(() => {
+      renewToken();
+    }, 3 * 60 * 1000);
+
+    const onResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    }
+
+    onResize();
+
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      if(renewTokenIntervalId.current) {
+        clearInterval(renewTokenIntervalId.current);
       }
 
-      api.functional.api.auth.admin.renew_token.adminRenewToken(connection, {
-        refreshToken: refreshToken!,
-      }).then(response => {
-        setAccessToken(response.accessToken);
-        LocalStorage.adminRefreshToken = response.refreshToken;
-      }).catch(() => {
-        navigate(ROUTES.ADMIN_SIGN_IN);
-      });
-    }
+      window.removeEventListener('resize', onResize);
+    };
   }, []);
 
   return (
@@ -50,8 +79,8 @@ export default function Admin() {
       </div>
       <div className='mt-14 flex'>
         <Navigation />
-        <div className={`flex-1 p-4 absolute ${isNavOpen ? 'left-56 w-[calc(100%-14rem)]' : 'left-16 w-[calc(100%-4rem)]'} transition-[left]`}>
-          <Outlet />
+        <div className={`flex-1 p-4 ${isNavOpen ? 'ml-56' : isMobile ? 'ml-0' : 'ml-16'} transition-[margin]`}>
+          {accessToken && <Outlet />}
         </div>
       </div>
     </>

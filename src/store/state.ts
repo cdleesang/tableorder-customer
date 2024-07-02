@@ -12,6 +12,11 @@ export const isAdminNavOpenState = atom<boolean>({
   default: false,
 });
 
+export const isMobileState = atom<boolean>({
+  key: 'isMobile',
+  default: window.innerWidth <= 768,
+});
+
 export const tableNoState = atom<number | undefined>({
   key: 'tableNo',
   default: parseInt(LocalStorage.tableNo || '', 10) || undefined,

@@ -18,4 +18,23 @@ export class LocalStorage {
 
     localStorage.setItem('adminRefreshToken', refreshToken);
   }
+
+  static get tablesPerLine(): number | null {
+    return parseInt(localStorage.getItem('tablesPerLine') || '', 10);
+  }
+  static set tablesPerLine(tablesPerLine: number | null) {
+    if(tablesPerLine === null) {
+      localStorage.removeItem('tablesPerLine');
+      return;
+    }
+
+    localStorage.setItem('tablesPerLine', tablesPerLine.toString());
+  }
+  
+  static get hiddenTableIds(): string[] {
+    return JSON.parse(localStorage.getItem('hiddenTableIds') || '[]');
+  }
+  static set hiddenTableIds(hiddenTableIds: string[]) {
+    localStorage.setItem('hiddenTableIds', JSON.stringify(hiddenTableIds));
+  }
 }
