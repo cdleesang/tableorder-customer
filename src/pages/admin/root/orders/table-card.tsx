@@ -2,7 +2,7 @@ import { GetAllOrderHistoriesResponseDto } from '@cdleesang/tableorder-api-sdk/l
 import { Table } from './types/table';
 import { priceComma } from '../../../../common/utils/price-comma.util';
 
-export function TableCard({table, orderHistory, recentlyUpdated, hide, unhide}: {table: Table, orderHistory: GetAllOrderHistoriesResponseDto[number] | undefined, recentlyUpdated: boolean, hide?: () => void, unhide?: () => void}) {
+export function TableCard({table, orderHistory, recentlyUpdated, hide, unhide}: {table: Table, orderHistory: GetAllOrderHistoriesResponseDto['orderHistories'][number] | undefined, recentlyUpdated: boolean, hide?: () => void, unhide?: () => void}) {
   return (
     <div
       key={table.id}

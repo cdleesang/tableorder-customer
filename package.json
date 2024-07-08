@@ -10,7 +10,7 @@
     "analyze": "cross-env REACT_APP_INTERACTIVE_ANALYZE=1 npm run build"
   },
   "dependencies": {
-    "@cdleesang/tableorder-api-sdk": "^0.2.1",
+    "@cdleesang/tableorder-api-sdk": "^0.2.2",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-regular-svg-icons": "^6.5.2",
