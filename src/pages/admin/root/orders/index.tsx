@@ -1,12 +1,13 @@
 import api from '@cdleesang/tableorder-api-sdk';
 import { GetAllOrderHistoriesResponseDto } from '@cdleesang/tableorder-api-sdk/lib/structures/GetAllOrderHistoriesResponseDto';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Modal from '../../../../components/modal';
 import { useAdminConnection } from '../../../../hooks/use-admin-connection';
 import { LocalStorage } from '../../../../store/local-storage';
 import { TableCard } from './table-card';
 import { Table } from './types/table';
 import { UtilityBar } from './utility-bar';
+import { priceComma } from '../../../../common/utils/price-comma.util';
 
 const TABLES_PER_LINE_OPTIONS = [1,2,3,4,5,6,7,8,9,10,11,12] as const;
 const FETCH_INTERVAL = 10 * 1000;
@@ -20,12 +21,18 @@ export default function Orders() {
   const [tables, setTables] = useState<Table[]>([]);
   const [tablesPerLine, setTablesPerLine] = useState<typeof TABLES_PER_LINE_OPTIONS[number]>((LocalStorage.tablesPerLine || 4) as typeof TABLES_PER_LINE_OPTIONS[number]);
   const [hiddenTableIds, setHiddenTableIds] = useState<string[]>(LocalStorage.hiddenTableIds || []);
-  const [orderHistories, setOrderHistories] = useState<GetAllOrderHistoriesResponseDto>([]);
+  const [orderHistories, setOrderHistories] = useState<GetAllOrderHistoriesResponseDto['orderHistories']>([]);
+  const [totalSalesRevenue, setTotalSalesRevenue] = useState<number>(0);
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
   const [recentlyUpdatedTableIds, setRecentlyUpdatedTableIds] = useState<string[]>([]);
   const [currentMode, setCurrentMode] = useState<typeof MODES[keyof typeof MODES]>(MODES.ALL);
   const fetchOrdersRef = useRef<() => Promise<void>>(async () => {});
   const fetchIntervalId = useRef<NodeJS.Timeout | null>(null);
+  const totalOutstandingRevenue = useMemo(() => {
+    return orderHistories.reduce((acc, orderHistory) => {
+      return acc + orderHistory.totalPrice;
+    }, 0);
+  }, [orderHistories]);
   const connection = useAdminConnection();
 
   const fetchAndSetInterval = async () => {
@@ -42,7 +49,7 @@ export default function Orders() {
 
   const fetchOrders = async () => {
     try {
-      const newOrderHistories = await api.functional.api.order.history.getAllOrderHistories(connection);
+      const {orderHistories: newOrderHistories, totalSalesRevenue: newTotalSalesRevenue} = await api.functional.api.order.history.getAllOrderHistories(connection);
 
       const updatedTableIds = newOrderHistories.reduce<string[]>((acc, newOrderHistory) => {
         const oldOrderHistory = orderHistories.find(orderHistory => orderHistory.tableId === newOrderHistory.tableId);
@@ -70,6 +77,7 @@ export default function Orders() {
       setRecentlyUpdatedTableIds(prev => Array.from(new Set([...prev, ...updatedTableIds])));
 
       setOrderHistories(newOrderHistories);
+      setTotalSalesRevenue(newTotalSalesRevenue);
     } catch(err) {
       if(err instanceof api.HttpError) {
         if(err.status === 403) {
@@ -123,7 +131,11 @@ export default function Orders() {
         fetchAndSetInterval={fetchAndSetInterval}
         tablesPerLineOptions={TABLES_PER_LINE_OPTIONS}
       />
-      
+      <hr className='my-2' />
+      <div className='flex justify-between'>
+        <span className='font-semibold'>현재 미결제액: {priceComma(totalOutstandingRevenue)}원</span>
+        <span className='font-semibold'>금일 매출액: {priceComma(totalSalesRevenue)}원</span>
+      </div>
       <div
         className={`grid gap-1 gap-y-2 my-2`}
         style={{gridTemplateColumns: `repeat(${tablesPerLine}, minmax(0, 1fr)`}}
